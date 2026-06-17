@@ -1,2 +1,65 @@
-# digital-library-system
-A full-stack AI-powered library management system built with Django, Django REST Framework, and JavaScript. The system supports role-based access for admins, authors, and customers, including book management, PDF reading, shopping cart, discount codes, reviews, and personalized book recommendations.
+# Digital Library Management System
+
+## 📌 Description
+A full-stack digital library management system developed using Django, Django REST Framework, and JavaScript. The system provides role-based access for administrators, authors, and customers, enabling book management, online reading, shopping, and personalized recommendations.
+
+---
+
+## 🚀 Features
+
+### 👨‍💼 Admin
+- Manage books (add, edit, delete)
+- Manage authors
+- Manage discount codes
+- View orders and sales reports
+
+### ✍️ Author
+- Upload books (PDF)
+- View book status (approved / pending / rejected)
+- Manage uploaded books
+
+### 👤 Customer
+- Browse approved books
+- Search and filter books (by title, author, genre, description)
+- View book details
+- Preview first pages of books
+- Add books to cart
+- Apply discount codes
+- Complete purchase
+- View order history
+- Rate and comment on books
+
+---
+
+## 🤖 Recommendation System
+- Personalized book recommendations based on user ratings and  book summaries.
+
+---
+
+## 🛠 Technologies
+- Python
+- Django
+- Django REST Framework
+- JavaScript
+- HTML
+- CSS
+
+---
+
+## 📸 Screenshots
+
+- Home page
+![alt text](image.png)
+- Book details page
+![alt text](image-1.png)
+- Cart page
+![alt text](image-3.png)
+- Admin panel
+![alt text](image-2.png)
+- reading book
+![alt text](image-4.png)
+
+---
+## 👨‍💻 Contribution
+I was responsible for developing the backend of this project using Django and Django REST Framework, including REST API design, business logic implementation, and role-based access control.
+A simple recommendation system that suggests books based on d the books they have rated highly. The system uses basic logic based on book summaries.

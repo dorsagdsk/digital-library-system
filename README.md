@@ -49,17 +49,16 @@ A full-stack digital library management system developed using Django, Django RE
 ## 📸 Screenshots
 
 ### Home Page
-![Home Page](./images/Capture.png)
+![Home Page](./images/Capture.PNG)
 
 ### AI Page
-![AI Page](./images/Capture4.png)
+![AI Page](./images/Capture4.PNG)
 
 ### Admin Panel
-![Admin Panel](./images/Capture2.png)
+![Admin Panel](./images/Capture2.PNG)
 
 ### Reading Book
-![Reading Book](./images/Capture1.png)
-
+![Reading Book](./images/Capture1.PNG)
 ---
 ## 👨‍💻 Contribution
 I was responsible for developing the backend of this project using Django and Django REST Framework, including REST API design, business logic implementation, and role-based access control.

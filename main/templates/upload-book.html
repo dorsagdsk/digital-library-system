@@ -1,0 +1,191 @@
+<!-- <!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آپلود کتاب جدید</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h3 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #uploadMessage {
+            margin-top: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="uploadForm" enctype="multipart/form-data">
+            <h3>آپلود کتاب جدید</h3>
+            <input type="text" id="title" placeholder="عنوان کتاب" required>
+            <textarea id="description" placeholder="توضیحات" required></textarea>
+            <input type="file" id="full_file" accept=".pdf" required>
+            <button type="submit">ثبت کتاب</button>
+            <p id="uploadMessage"></p>
+        </form>
+    </div>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const token = localStorage.getItem('token');
+            const uploadMessageDiv = document.getElementById('uploadMessage');
+
+            if (!token) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('title', document.getElementById('title').value);
+            formData.append('description', document.getElementById('description').value);
+            formData.append('full_file', document.getElementById('full_file').files[0]);
+
+            try {
+                const response = await fetch('/api/author/books/upload/', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Token ${token}` },
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    uploadMessageDiv.textContent = 'کتاب با موفقیت ثبت شد و در انتظار تایید است.';
+                    uploadMessageDiv.style.color = 'green';
+                    // Optional: reset the form
+                    document.getElementById('uploadForm').reset();
+                } else {
+                    const errorText = JSON.stringify(data);
+                    uploadMessageDiv.textContent = `خطا در ثبت کتاب: ${errorText}`;
+                    uploadMessageDiv.style.color = 'red';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                uploadMessageDiv.textContent = 'خطا در برقراری ارتباط با سرور.';
+                uploadMessageDiv.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Book</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+    .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; }
+    input, select, textarea { width: 100%; margin-bottom: 15px; padding: 10px; }
+    button { background: #28a745; color: #fff; padding: 10px; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #218838; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Upload New Book</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <label>Title:</label>
+      <input type="text" name="title" required>
+
+      <label>Description:</label>
+      <textarea name="description" required></textarea>
+
+      <label>Book Type:</label>
+      <select name="book_type" required>
+        <option value="">-- Select Type --</option>
+        <option value="ebook">E-Book</option>
+        <option value="audiobook">Audiobook</option>
+      </select>
+
+      <label>Price:</label>
+      <input type="number" name="price" step="0.01" required>
+
+      <label>Genre:</label>
+      <select name="genre" multiple required>
+        <option value="fiction">Fiction</option>
+        <option value="nonfiction">Non-Fiction</option>
+        <option value="sci-fi">Sci-Fi</option>
+        <option value="history">History</option>
+        <!-- ژانرهای دیگه رو خودت اضافه کن -->
+      </select>
+
+      <label>Book File (PDF):</label>
+      <input type="file" name="file" accept="application/pdf" required>
+
+      <button type="submit">Upload</button>
+    </form>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert("Please login first.");
+        window.location.href = '/login/';
+        return;
+      }
+
+      const formData = new FormData(e.target);
+      try {
+        const response = await fetch('/api/books/upload/', {
+          method: 'POST',
+          headers: { 'Authorization': `Token ${token}` },
+          body: formData
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          document.getElementById('message').innerText = "Book uploaded successfully!";
+        } else {
+          document.getElementById('message').innerText = "Error: " + JSON.stringify(data);
+        }
+      } catch (err) {
+        document.getElementById('message').innerText = "Server error!";
+      }
+    });
+  </script>
+</body>
+</html>

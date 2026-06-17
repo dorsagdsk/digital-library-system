@@ -1,0 +1,297 @@
+/* admin_style.css */
+
+/* Color Palette Variables */
+:root {
+    --isabelline: #edede9ff;
+    --timberwolf: #d6ccc2ff;
+    --linen: #f5ebe0ff;
+    --champagne-pink: #e3d5caff;
+    --pale-dogwood: #d5bdafff;
+
+    /* Additional colors for UI elements */
+    --text-color: #333;
+    --heading-color: #4CAF50; /* Green for headings/icons as per your HTML */
+    --button-hover-darken: 10%; /* Percentage to darken buttons on hover */
+}
+
+/* Base Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--isabelline);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex; /* Use flexbox for main layout */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+}
+
+/* Header Styles */
+.header {
+    background-color: var(--pale-dogwood);
+    color: white;
+    padding: 15px 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: fixed; /* Fixed header */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure it stays on top */
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px; /* Limit content width */
+    margin: 0 auto;
+}
+
+.header-left, .header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-center h1 {
+    margin: 0;
+    font-size: 1.8em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white; /* Header text color */
+}
+
+.header-center h1 .fas {
+    font-size: 1.2em;
+}
+
+.library-icon {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    border-radius: 50%; /* If your icon is square, make it round */
+}
+
+#search-box {
+    padding: 10px 15px;
+    border: 1px solid var(--timberwolf);
+    border-radius: 20px;
+    outline: none;
+    font-size: 0.95em;
+    width: 200px;
+    background-color: var(--linen);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+#search-box::placeholder {
+    color: #777;
+}
+
+#search-box:focus {
+    border-color: var(--champagne-pink);
+    box-shadow: 0 0 0 2px rgba(227, 213, 202, 0.5);
+}
+
+#search-button, #logout-button {
+    background-color: var(--champagne-pink);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#search-button:hover, #logout-button:hover {
+    background-color: #d8c2b5; /* Slightly darker champagne-pink */
+    transform: translateY(-1px);
+}
+
+#logout-button .fas {
+    margin-right: 5px; /* Space between icon and text */
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    background-color: var(--timberwolf);
+    padding-top: 100px; /* Space for fixed header */
+    position: fixed; /* Fixed sidebar */
+    top: 0;
+    left: 0;
+    height: 100vh;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center sidebar content */
+}
+
+.sidebar h3 {
+    color: var(--isabelline);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.5em;
+    padding: 0 10px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.05em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 0 25px 25px 0; /* Rounded right edge */
+}
+
+.sidebar ul li a .fas {
+    font-size: 1.2em;
+    color: #555;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active { /* Add 'active' class for the current page */
+    background-color: var(--champagne-pink);
+    color: white;
+}
+
+.sidebar ul li a:hover .fas,
+.sidebar ul li a.active .fas {
+    color: white;
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 250px; /* Offset for the fixed sidebar */
+    padding: 100px 30px 30px 30px; /* Padding for header and general content */
+    flex-grow: 1; /* Allows main content to take remaining space */
+}
+
+.main-content h2 {
+    color: var(--pale-dogwood);
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 2em;
+}
+
+/* Basic styling for book list (if dynamically loaded) */
+#book-list {
+    background-color: var(--linen);
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    min-height: 200px; /* Placeholder height */
+    text-align: center;
+    color: #777;
+    display: grid; /* Use grid for displaying books */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .header .container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .header-left, .header-right {
+        width: 100%;
+        justify-content: center;
+    }
+    .header-center {
+        order: -1; /* Move title to top */
+    }
+    .header {
+        padding-bottom: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: static; /* Stack sidebar on top for smaller screens */
+        padding-top: 20px;
+        box-shadow: none;
+        order: -1; /* Place sidebar above header on small screens */
+    }
+
+    .sidebar h3 {
+        margin-bottom: 15px;
+    }
+
+    .sidebar ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .sidebar ul li {
+        margin-bottom: 0;
+        flex: 1 1 auto; /* Allow list items to grow/shrink */
+    }
+
+    .sidebar ul li a {
+        padding: 10px 15px;
+        font-size: 0.9em;
+        justify-content: center;
+        border-radius: 8px; /* More uniform rounded corners */
+    }
+
+    .sidebar ul li a .fas {
+        font-size: 1em;
+        margin-left: 5px; /* Adjust spacing for icon in flex row */
+    }
+
+    .main-content {
+        margin-left: 0; /* Remove sidebar offset */
+        padding-top: 30px; /* Adjust padding as header is no longer fixed relative to content */
+    }
+
+    .header {
+        position: static; /* Make header static on small screens */
+        padding-bottom: 15px;
+    }
+
+    #search-box {
+        width: 100%;
+        max-width: 300px; /* Limit search box width even when full width */
+    }
+
+    .header-left {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-center h1 {
+        font-size: 1.5em;
+    }
+    .sidebar ul {
+        flex-direction: column; /* Stack sidebar links vertically on very small screens */
+    }
+    .sidebar ul li a {
+        text-align: center;
+        justify-content: center;
+    }
+}

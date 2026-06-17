@@ -1,0 +1,299 @@
+/* manage_books.css */
+
+/* Color Palette */
+:root {
+    --isabelline: #edede9ff;
+    --timberwolf: #d6ccc2ff;
+    --linen: #f5ebe0ff;
+    --champagne-pink: #e3d5caff;
+    --pale-dogwood: #d5bdafff;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: var(--isabelline);
+    color: #333;
+    line-height: 1.6;
+    direction: rtl; /* Ensures overall right-to-left text flow */
+    text-align: right;
+}
+
+h1, h2, h3, h4 {
+    color: var(--pale-dogwood);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Message Container */
+#message-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#message-container p {
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+#message-container p.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+#message-container p.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+#message-container p.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Form Styling */
+#book-form {
+    background-color: var(--linen);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    margin: 30px auto;
+    direction: rtl; /* Ensure form elements align right */
+    text-align: right;
+}
+
+#book-form h2, #book-form p {
+    text-align: right;
+    color: var(--pale-dogwood);
+}
+
+#book-form div {
+    margin-bottom: 15px;
+}
+
+#book-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+#book-form input[type="text"],
+#book-form input[type="number"],
+#book-form input[type="date"],
+#book-form select,
+#book-form textarea {
+    width: calc(100% - 20px); /* Account for padding */
+    padding: 10px;
+    border: 1px solid var(--timberwolf);
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box; /* Include padding in width */
+    background-color: var(--isabelline);
+    color: #333;
+}
+
+#book-form textarea {
+    resize: vertical;
+}
+
+#book-form input[type="file"] {
+    padding: 8px 0;
+    background-color: transparent;
+    border: none;
+    font-size: 0.95rem;
+}
+
+#book-form button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-left: 10px; /* Space between buttons */
+}
+
+#book-form button[type="submit"] {
+    background-color: var(--pale-dogwood);
+    color: white;
+}
+
+#book-form button[type="submit"]:hover {
+    background-color: darken(var(--pale-dogwood), 10%); /* Example for darker hover */
+}
+
+#cancel-edit-button {
+    background-color: var(--timberwolf);
+    color: #333;
+}
+
+#cancel-edit-button:hover {
+    background-color: darken(var(--timberwolf), 10%);
+}
+
+/* Author Autocomplete Styles */
+#author-suggestions {
+    border: 1px solid var(--timberwolf);
+    border-top: none;
+    max-height: 150px;
+    overflow-y: auto;
+    background-color: var(--isabelline);
+    position: absolute;
+    width: calc(100% - 2px); /* Match input width */
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 5px 5px;
+}
+
+.author-suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--champagne-pink);
+    color: #333;
+    text-align: right; /* Align text within suggestions */
+}
+
+.author-suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.author-suggestion-item:hover {
+    background-color: var(--champagne-pink);
+}
+
+#new-author-fields {
+    background-color: var(--isabelline);
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 15px;
+    border: 1px dashed var(--timberwolf);
+    text-align: right;
+}
+
+#new-author-fields h4 {
+    margin-top: 0;
+    color: #666;
+    font-size: 1.1em;
+    text-align: right;
+}
+
+/* Horizontal Rule */
+hr {
+    border: 0;
+    height: 1px;
+    background-color: var(--timberwolf);
+    margin: 40px auto;
+    max-width: 700px;
+}
+
+/* Book List Styling */
+.book-list-container {
+    max-width: 800px;
+    margin: 30px auto;
+    background-color: var(--linen);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: right;
+}
+
+#book-list {
+    display: grid;
+    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.book-item {
+    background-color: var(--champagne-pink);
+    border: 1px solid var(--pale-dogwood);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.book-item h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 1.3rem;
+}
+
+.book-item p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+.book-item strong {
+    color: #222;
+}
+
+.book-item .actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end; /* Align buttons to the right */
+}
+
+.book-item .actions button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.book-item .edit-btn {
+    background-color: var(--pale-dogwood);
+    color: white;
+}
+
+.book-item .edit-btn:hover {
+    background-color: darken(var(--pale-dogwood), 10%);
+}
+
+.book-item .delete-btn {
+    background-color: #dc3545; /* A standard red for delete */
+    color: white;
+}
+
+.book-item .delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    body {
+        margin: 10px;
+    }
+
+    #book-form, .book-list-container {
+        padding: 20px;
+        margin: 20px auto;
+    }
+
+    #book-form button {
+        width: 100%;
+        margin-bottom: 10px;
+        margin-left: 0;
+    }
+
+    .book-item .actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

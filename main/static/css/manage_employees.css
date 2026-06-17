@@ -1,0 +1,149 @@
+/* Reset some basic elements for consistency */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(90deg, #3f0000, #340000);
+    color: #000000;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+/* Container for the employee list */
+.employee-container {
+    direction: rtl;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#employee-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* Styling each employee card */
+.employee-card {
+    background-color: #ecf0f1;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.employee-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.employee-card h3 {
+    font-size: 1.5em;
+    color: #230004;
+    margin-bottom: 10px;
+}
+
+.employee-card p {
+    color: #7f8c8d;
+    margin-bottom: 8px;
+}
+
+.employee-card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+/* Style buttons for edit and delete */
+/* استایل برای کارت کارمندان */
+.employee-card {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* استایل برای دکمه‌ها */
+.employee-card-actions button {
+    background-color: #000000;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* فاصله بین آیکن و متن */
+    margin-right: 10px;
+}
+
+/* اندازه آیکن‌ها */
+.employee-card-actions button i {
+    font-size: 1.2em;
+}
+
+/* تغییر رنگ دکمه‌ها هنگام hover */
+.employee-card-actions button:hover {
+    background-color: #000000;
+}
+
+/* استایل دکمه حذف */
+.employee-card-actions .delete-btn {
+    background-color: #e74c3c;
+}
+
+.employee-card-actions .delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* استایل دکمه ویرایش */
+.employee-card-actions .edit-btn {
+    background-color: #2a0007;
+}
+
+.employee-card-actions .edit-btn:hover {
+    background-color: #6b020d;
+}
+
+/* تنظیم ظاهر کلی دکمه‌ها */
+.employee-card-actions {
+    display: flex;
+    align-items: center;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    #employee-list {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    #employee-list {
+        grid-template-columns: 1fr;
+    }
+
+    .employee-card {
+        padding: 15px;
+    }
+
+    .employee-card h3 {
+        font-size: 1.2em;
+    }
+}

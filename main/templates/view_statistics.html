@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Statistics - Library Admin</title>
+    <link rel="stylesheet" href="{% static 'css/admin_style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-left">
+                <div class="search-bar-group">
+                    <input type="text" id="stat-search-box" placeholder="Search statistics...">
+                    <button id="stat-search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="header-center">
+                <h1>
+                    <i class="fas fa-book" style="color: #4CAF50;"></i>
+                    <img src="{% static 'images/library_icon.png' %}" alt="Library Icon" class="library-icon">
+                    Library Admin Panel
+                    <img src="{% static 'images/library_icon.png'}" alt="Library Icon" class="library-icon">
+                </h1>
+            </div>
+            <div class="header-right">
+                <button id="logout-button">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar">
+        <h3>Admin Panel</h3>
+        <ul>
+            <li><a href="/admin-dashboard/"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="/add-book"><i class="fas fa-book-medical"></i> Add New Book</a></li>
+            <li><a href="/add-author"><i class="fas fa-feather-alt"></i> Add New Author</a></li>
+            <li><a href="/manage-books/"><i class="fas fa-book-open"></i> Manage Books</a></li>
+            <li><a href="/manage-authors/"><i class="fas fa-users"></i> Manage Authors</a></li>
+            <li><a href="/manage-users/"><i class="fas fa-user-friends"></i> Manage Users</a></li>
+            <li><a href="/add-discount-code"><i class="fas fa-tags"></i> Add Discount Code</a></li>
+            <li><a href="/view-orders"><i class="fas fa-receipt"></i> View Orders</a></li>
+            <li><a href="/view-statistics" class="active"><i class="fas fa-chart-line"></i> View Statistics</a></li> {# Mark active #}
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h2>Library Statistics</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Books</h3>
+                <p id="total-books-count">--</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Authors</h3>
+                <p id="total-authors-count">--</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Users</h3>
+                <p id="total-users-count">--</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Orders</h3>
+                <p id="total-orders-count">--</p>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h3>Top 5 Most Ordered Books</h3>
+            <canvas id="topBooksChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h3>Orders Over Time</h3>
+            <canvas id="ordersOverTimeChart"></canvas>
+        </div>
+
+    </div>
+
+    <script src="{% static 'js/view_statistics.js' %}"></script> {# Dedicated JS for this page #}
+    <script src="{% static 'js/logout.js' %}"></script>
+</body>
+</html>

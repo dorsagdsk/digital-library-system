@@ -1,0 +1,157 @@
+/* Colors from your palette */
+:root {
+    --light-brown: #c8ab8d;
+    --dark-charcoal: #161113;
+    --deep-brown: #432623;
+    --dark-brown: #2c1f1c;
+    --medium-brown: #633f37;
+    --warm-brown: #472d16;
+    --soft-brown: #855c4d;
+    --deep-rust: #4a3529;
+    --medium-rust: #573523;
+    --highlight: #aa8e76;
+  }
+  
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-image: url("../image/w0pEkDaz.jpg");
+    background-position: left;
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: #000000;
+    color: var(--light-brown);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 730px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+  
+.dark-overlay {
+    background-color: rgba(0, 0, 0, 0.74);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+  
+  .container {
+    background-color: #282d27a7;
+    padding: 28px 36px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  }
+  
+  h2 {
+    margin-bottom: 22px;
+    color: var(--highlight);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    font-size: 1.9rem;
+  }
+  
+  /* Form styles */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+  
+  label {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: var(--light-brown);
+    letter-spacing: 0.03em;
+    font-size: 0.95rem;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1.8px solid var(--medium-rust);
+    background-color: var(--light-brown);
+    color: var(--dark-charcoal);
+    font-size: 15px;
+    font-weight: 400;
+    transition: border-color 0.25s ease, background-color 0.25s ease;
+  }
+  
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    border-color: var(--highlight);
+    background-color: var(--medium-brown);
+    color: var(--dark-charcoal);
+  }
+  
+  button.btn {
+    padding: 9px 0;
+    background-color: var(--highlight);
+    border: none;
+    border-radius: 14px; /* گردتر */
+    font-weight: 450;
+    color: var(--dark-charcoal);
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.4s ease;
+    margin-top: 8px;
+    box-shadow: 0 4px 12px rgba(170, 142, 118, 0.35); /* سایه ملایم‌تر */
+}
+
+button.btn:hover {
+    background-color: rgba(133, 92, 77, 0.85); /* کمی شفاف‌تر و ملایم‌تر */
+    color: var(--light-brown);
+    transform: translateY(-1.5px);
+    box-shadow: 0 8px 8px rgba(133, 92, 77, 0.4); /* سایه ملایم و بزرگتر */
+}
+
+  
+  .error {
+    margin-top: 10px;
+    color: #ff6b6b;
+    font-weight: 500;
+    min-height: 20px;
+    font-size: 0.9rem;
+  }
+  button.btn-login {
+    margin-top: 2px;
+    padding: 10px 0;
+    width: 80%;
+    background-color: transparent;
+    color: var(--highlight);
+    font-weight: 500;
+    font-size: 16px;
+    border: 2.5px solid var(--highlight);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+}
+
+button.btn-login:hover {
+    background-color: var(--highlight);
+    color: var(--dark-charcoal);
+    box-shadow: 0 6px 16px rgba(170, 142, 118, 0.7);
+    transform: translateY(-2px);
+}
+

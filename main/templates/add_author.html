@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Author</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/add_author.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Add New Author</h1>
+        <form id="addAuthorForm">
+            <div class="form-group">
+                <label for="authorUsername">Username:</label>
+                <input type="text" id="authorUsername" name="username" required>
+                <div id="usernameError" class="validation-error"></div>
+            </div>
+            <div class="form-group">
+                <label for="authorPassword">Password:</label>
+                <input type="password" id="authorPassword" name="password" required minlength="8">
+                <div id="passwordError" class="validation-error"></div>
+            </div>
+            <div class="form-group">
+                <label for="authorFirstName">First Name:</label>
+                <input type="text" id="authorFirstName" name="first_name" required>
+                <div id="firstNameError" class="validation-error"></div>
+            </div>
+            <div class="form-group">
+                <label for="authorLastName">Last Name:</label>
+                <input type="text" id="authorLastName" name="last_name" required>
+                <div id="lastNameError" class="validation-error"></div>
+            </div>
+            <div class="form-group">
+                <label for="authorEmail">Email (Optional):</label>
+                <input type="email" id="authorEmail" name="email">
+                <div id="emailError" class="validation-error"></div>
+            </div>
+            <div class="form-group">
+                <label for="authorContactNumber">Contact Number (Optional):</label>
+                <input type="tel" id="authorContactNumber" name="contact_number">
+                <div id="contactNumberError" class="validation-error"></div>
+            </div>
+            <button type="submit">Add Author</button>
+        </form>
+        <div id="message" class="message" style="display: none;"></div>
+    </div>
+
+    <script src="{% static 'js/add_author.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,2986 @@
+<!-- 
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Digital Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/customer_dashboard2.css' %}">
+    <style>
+        .cart-item-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background-color: #fff;
+        }
+        .cart-item-card img {
+            width: 80px;
+            height: 100px; /* Fixed height for consistency */
+            object-fit: cover; /* Ensures image covers the area without distortion */
+            margin-right: 20px;
+            border-radius: 4px;
+        }
+        .cart-item-details {
+            flex-grow: 1;
+        }
+        .cart-item-details h5 {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        .cart-item-details p {
+            margin-bottom: 3px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .cart-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .summary-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a class="navbar-brand" href="{% url 'customer_dashboard' %}">Digital Library</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="me-3">Welcome, {{ user.first_name|default:user.username }}</span>
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+            <a href="{% url 'register_customer' %}" class="btn btn-primary btn-sm">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h2>My Shopping Cart</h2>
+
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-md-8">
+                    {% for item in cart_items %}
+                        <div class="cart-item-card">
+                            {% if item.book.cover_image %}
+                                <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }} cover">
+                            {% else %}
+                                <img src="{% static 'main/img/default_cover.png' %}" alt="Default cover">
+                            {% endif %}
+                            <div class="cart-item-details">
+                                <h5>{{ item.book.title }}</h5>
+                                <p>Price: ${{ item.book.price|floatformat:2 }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                                <p>Total for item: ${{ item.total_price|floatformat:2 }}</p>
+                            </div>
+                            <div class="cart-actions">
+                                {# You can add a form here to update quantity if needed #}
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove {{ item.book.title }} from your cart?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <h4>Cart Summary</h4>
+                        <p>Total items: {{ cart_items.count }}</p>
+                        <p>Subtotal: <strong>${{ total_price|floatformat:2 }}</strong></p>
+                        {# Add discount code application form here if you want #}
+                        <form action="{% url 'checkout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100 mt-3">Proceed to Checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">Your cart is empty. <a href="{% url 'customer_dashboard' %}?tab=browse-books" class="alert-link">Start Browse books!</a></p>
+        {% endif %}
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> -->
+
+
+
+
+<!-- 
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Digital Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/customer_dashboard2.css' %}">
+    <style>
+        .cart-item-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background-color: #fff;
+        }
+        .cart-item-card img {
+            width: 80px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 20px;
+            border-radius: 4px;
+        }
+        .cart-item-details {
+            flex-grow: 1;
+        }
+        .cart-item-details h5 {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        .cart-item-details p {
+            margin-bottom: 3px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .cart-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .summary-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background-color: #fff;
+        }
+        .summary-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a class="navbar-brand" href="{% url 'customer_dashboard' %}">Digital Library</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="me-3">Welcome, {{ user.first_name|default:user.username }}</span>
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+            <a href="{% url 'register_customer' %}" class="btn btn-primary btn-sm">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h2>My Shopping Cart</h2>
+
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-md-8">
+                    {% for item in cart_items %}
+                        <div class="cart-item-card">
+                            {% if item.book.cover_image %}
+                                <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }} cover">
+                            {% else %}
+                                <img src="{% static 'main/img/default_cover.png' %}" alt="Default cover">
+                            {% endif %}
+                            <div class="cart-item-details">
+                                <h5>{{ item.book.title }}</h5>
+                                <p>Price: ${{ item.book.price|floatformat:2 }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                            </div>
+                            <div class="cart-actions">
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove {{ item.book.title }} from your cart?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <h4>Cart Summary</h4>
+                        <div class="summary-detail">
+                            <span>Subtotal:</span>
+                            <span><strong>${{ total_price|floatformat:2 }}</strong></span>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="mb-3">
+                            <h6>Apply Discount Code</h6>
+                            <form id="apply-discount-form">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Enter code" id="discount-code-input">
+                                    <button class="btn btn-outline-primary" type="submit">Apply</button>
+                                </div>
+                            </form>
+                            <div id="discount-message" class="mt-2"></div>
+                        </div>
+
+                        <hr>
+                        
+                        <div class="summary-detail mt-3">
+                            <h5>Total:</h5>
+                            <h5 class="fw-bold">${{ total_price|floatformat:2 }}</h5>
+                        </div>
+
+                        <form action="{% url 'checkout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100 mt-3">Proceed to Checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">Your cart is empty. <a href="{% url 'customer_dashboard' %}?tab=browse-books" class="alert-link">Start shopping now!</a></p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const discountForm = document.getElementById('apply-discount-form');
+            if (discountForm) {
+                discountForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const discountCode = document.getElementById('discount-code-input').value;
+                    const discountMessage = document.getElementById('discount-message');
+
+                    fetch('{% url "apply_discount" %}', {
+                        method: 'POST',
+                        body: JSON.stringify({ code: discountCode }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            discountMessage.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                            window.location.reload(); 
+                        } else {
+                            discountMessage.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        discountMessage.innerHTML = `<div class="alert alert-danger">An unexpected error occurred.</div>`;
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html> 
+
+
+
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Digital Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/customer_dashboard2.css' %}">
+    <style>
+        /* ... (Your existing styles) ... */
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a class="navbar-brand" href="{% url 'customer_dashboard' %}">Digital Library</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="me-3">Welcome, {{ user.first_name|default:user.username }}</span>
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+            <a href="{% url 'register_customer' %}" class="btn btn-primary btn-sm">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h2>My Shopping Cart</h2>
+
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-md-8">
+                    {% for item in cart_items %}
+                        <div class="cart-item-card">
+                            {% if item.book.cover_image %}
+                                <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }} cover">
+                            {% else %}
+                                <img src="{% static 'main/img/default_cover.png' %}" alt="Default cover">
+                            {% endif %}
+                            <div class="cart-item-details">
+                                <h5>{{ item.book.title }}</h5>
+                                <p>Price: ${{ item.book.price|floatformat:2 }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                            </div>
+                            <div class="cart-actions">
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove {{ item.book.title }} from your cart?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <h4>Cart Summary</h4>
+                        <div class="summary-detail">
+                            <span>Subtotal:</span>
+                            <span><strong>${{ total_price|floatformat:2 }}</strong></span>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="mb-3">
+                            <h6>Apply Discount Code</h6>
+                            <form id="apply-discount-form">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Enter code" id="discount-code-input">
+                                    <button class="btn btn-outline-primary" type="submit">Apply</button>
+                                </div>
+                            </form>
+                            <div id="discount-message" class="mt-2"></div>
+                        </div>
+
+                        <hr>
+                        
+                        <div class="summary-detail mt-3">
+                            <h5>Total:</h5>
+                            <h5 class="fw-bold">${{ total_price|floatformat:2 }}</h5>
+                        </div>
+
+                        <button id="buy-now-button" class="btn btn-success w-100 mt-3">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">Your cart is empty. <a href="{% url 'customer_dashboard' %}?tab=browse-books" class="alert-link">Start shopping now!</a></p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const discountForm = document.getElementById('apply-discount-form');
+            if (discountForm) {
+                discountForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const discountCode = document.getElementById('discount-code-input').value;
+                    const discountMessage = document.getElementById('discount-message');
+
+                    fetch('{% url "apply_discount" %}', {
+                        method: 'POST',
+                        body: JSON.stringify({ code: discountCode }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            discountMessage.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                            window.location.reload(); 
+                        } else {
+                            discountMessage.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        discountMessage.innerHTML = `<div class="alert alert-danger">An unexpected error occurred.</div>`;
+                    });
+                });
+            }
+
+            // New JavaScript to handle the "Buy Now" button
+            const buyNowButton = document.getElementById('buy-now-button');
+            if (buyNowButton) {
+                buyNowButton.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to purchase all items in your cart?')) {
+                        // Redirect to a new view that handles the purchase logic
+                        window.location.href = '{% url "purchase_cart" %}';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Digital Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/customer_dashboard2.css' %}">
+    <style>
+        body {
+            background-color: #f4f7f9;
+            color: #333;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .container {
+            padding: 2rem 1rem;
+        }
+
+        h2 {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+
+        .cart-item-card {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .cart-item-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .cart-item-card img {
+            max-width: 90px;
+            height: auto;
+            border-radius: 8px;
+            margin-right: 25px;
+            object-fit: cover;
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        .cart-item-details h5 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-details p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #7f8c8d;
+        }
+
+        .cart-actions {
+            margin-left: auto;
+        }
+
+        .summary-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 25px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .summary-card h4 {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .summary-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .summary-detail .fw-bold {
+            font-size: 1.2rem;
+            color: #2c3e50;
+        }
+
+        .btn-success {
+            background-color: #2ecc71;
+            border-color: #2ecc71;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+            border-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a class="navbar-brand" href="{% url 'customer_dashboard' %}">Digital Library</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="me-3">Welcome, {{ user.first_name|default:user.username }}</span>
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+            <a href="{% url 'register_customer' %}" class="btn btn-primary btn-sm">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h2>My Shopping Cart</h2>
+
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-md-8">
+                    {% for item in cart_items %}
+                        <div class="cart-item-card">
+                            {% if item.book.cover_image %}
+                                <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }} cover">
+                            {% else %}
+                                <img src="{% static 'main/img/default_cover.png' %}" alt="Default cover">
+                            {% endif %}
+                            <div class="cart-item-details">
+                                <h5>{{ item.book.title }}</h5>
+                                <p>Price: ${{ item.book.price|floatformat:2 }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                            </div>
+                            <div class="cart-actions">
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove {{ item.book.title }} from your cart?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <h4>Cart Summary</h4>
+                        <div class="summary-detail">
+                            <span>Subtotal:</span>
+                            <span><strong>${{ total_price|floatformat:2 }}</strong></span>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="mb-3">
+                            <h6>Apply Discount Code</h6>
+                            <form action="{% url 'apply_discount' %}" method="post">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="code" placeholder="Enter code">
+                                    <button class="btn btn-outline-primary" type="submit">Apply</button>
+                                </div>
+                            </form>
+                            <div id="discount-message" class="mt-2"></div>
+                        </div>
+
+                        <hr>
+                        
+                        <div class="summary-detail mt-3">
+                            <h5>Total:</h5>
+                            <h5 class="fw-bold">${{ total_price|floatformat:2 }}</h5>
+                        </div>
+
+                        <form action="{% url 'checkout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100 mt-3">Proceed to Checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">Your cart is empty. <a href="{% url 'customer_dashboard' %}?tab=browse-books" class="alert-link">Start shopping now!</a></p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Digital Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/customer_dashboard2.css' %}">
+    <style>
+        body { background-color: #f4f7f9; color: #333; }
+        .navbar { box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+        .container { padding: 2rem 1rem; }
+        h2 { font-weight: 600; margin-bottom: 1.5rem; color: #2c3e50; }
+        .cart-item-card {
+            display: flex; align-items: center; padding: 20px; margin-bottom: 20px;
+            border: 1px solid #e0e0e0; border-radius: 12px; background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); transition: transform 0.2s ease-in-out;
+        }
+        .cart-item-card:hover { transform: translateY(-5px); }
+        .cart-item-card img {
+            max-width: 90px; height: auto; border-radius: 8px;
+            margin-right: 25px; object-fit: cover;
+        }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-details h5 { font-weight: 600; margin-bottom: 5px; }
+        .cart-item-details p { margin: 0; font-size: 0.95rem; color: #7f8c8d; }
+        .cart-actions { margin-left: auto; }
+        .summary-card {
+            border: 1px solid #e0e0e0; border-radius: 12px;
+            padding: 25px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        .summary-card h4 {
+            font-weight: 600; margin-bottom: 1.5rem; border-bottom: 2px solid #3498db;
+            padding-bottom: 10px; display: inline-block;
+        }
+        .summary-detail {
+            display: flex; justify-content: space-between;
+            margin-bottom: 15px; font-size: 1.1rem;
+        }
+        .summary-detail .fw-bold { font-size: 1.2rem; color: #2c3e50; }
+        .btn-success {
+            background-color: #2ecc71; border-color: #2ecc71;
+            font-weight: bold; transition: background-color 0.2s ease;
+        }
+        .btn-success:hover { background-color: #27ae60; border-color: #27ae60; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a class="navbar-brand" href="{% url 'customer_dashboard' %}">Digital Library</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="me-3">Welcome, {{ user.first_name|default:user.username }}</span>
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+            <a href="{% url 'register_customer' %}" class="btn btn-primary btn-sm">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h2>My Shopping Cart</h2>
+
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-md-8">
+                    {% for item in cart_items %}
+                        <div class="cart-item-card">
+                            {% if item.book.cover_image %}
+                                <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }} cover">
+                            {% else %}
+                                <img src="{% static 'main/img/default_cover.png' %}" alt="Default cover">
+                            {% endif %}
+                            <div class="cart-item-details">
+                                <h5>{{ item.book.title }}</h5>
+                                <p>Price: ${{ item.book.price|floatformat:2 }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                            </div>
+                            <div class="cart-actions">
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove {{ item.book.title }} from your cart?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <h4>Cart Summary</h4>
+                        <div class="summary-detail">
+                            <span>Subtotal:</span>
+                            <span id="subtotal-price"><strong>${{ total_price|floatformat:2 }}</strong></span>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-3">
+                            <h6>Apply Discount Code</h6>
+                            <form id="discount-form" action="{% url 'apply_discount' %}" method="post">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="id_discount_code" name="code" placeholder="Enter code">
+                                    <button class="btn btn-outline-primary" type="submit">Apply</button>
+                                </div>
+                            </form>
+                            <div id="discount-message" class="mt-2"></div>
+                        </div>
+
+                        <hr>
+
+                        <div class="summary-detail mt-3">
+                            <h5>Total:</h5>
+                            <h5 id="total-price" class="fw-bold">${{ total_price|floatformat:2 }}</h5>
+                        </div>
+
+                        <form id="checkout-form" action="{% url 'checkout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100 mt-3">Proceed to Checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">Your cart is empty. <a href="{% url 'customer_dashboard' %}" class="alert-link">Start shopping now!</a></p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('discount-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the form from submitting normally
+
+            const form = e.target;
+            const discountCode = document.getElementById('id_discount_code').value;
+            const csrfToken = form.querySelector('[name="csrfmiddlewaretoken"]').value;
+            const discountMessageDiv = document.getElementById('discount-message');
+            const totalElement = document.getElementById('total-price');
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ code: discountCode })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    discountMessageDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                    totalElement.innerHTML = `<strong>$${data.new_total.toFixed(2)}</strong>`;
+                } else {
+                    discountMessageDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                }
+            })
+            .catch(error => {
+                discountMessageDiv.innerHTML = `<div class="alert alert-danger">An unexpected error occurred.</div>`;
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Digital Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/customer_dashboard2.css' %}">
+    <style>
+        body { background-color: #f4f7f9; color: #333; }
+        .navbar { box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+        .container { padding: 2rem 1rem; }
+        h2 { font-weight: 600; margin-bottom: 1.5rem; color: #2c3e50; }
+        .cart-item-card {
+            display: flex; align-items: center; padding: 20px; margin-bottom: 20px;
+            border: 1px solid #e0e0e0; border-radius: 12px; background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); transition: transform 0.2s ease-in-out;
+        }
+        .cart-item-card:hover { transform: translateY(-5px); }
+        .cart-item-card img {
+            max-width: 90px; height: auto; border-radius: 8px;
+            margin-right: 25px; object-fit: cover;
+        }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-details h5 { font-weight: 600; margin-bottom: 5px; }
+        .cart-item-details p { margin: 0; font-size: 0.95rem; color: #7f8c8d; }
+        .cart-actions { margin-left: auto; }
+        .summary-card {
+            border: 1px solid #e0e0e0; border-radius: 12px;
+            padding: 25px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        .summary-card h4 {
+            font-weight: 600; margin-bottom: 1.5rem; border-bottom: 2px solid #3498db;
+            padding-bottom: 10px; display: inline-block;
+        }
+        .summary-detail {
+            display: flex; justify-content: space-between;
+            margin-bottom: 15px; font-size: 1.1rem;
+        }
+        .summary-detail .fw-bold { font-size: 1.2rem; color: #2c3e50; }
+        .btn-success {
+            background-color: #2ecc71; border-color: #2ecc71;
+            font-weight: bold; transition: background-color 0.2s ease;
+        }
+        .btn-success:hover { background-color: #27ae60; border-color: #27ae60; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a class="navbar-brand" href="{% url 'customer_dashboard' %}">Digital Library</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="me-3">Welcome</span>
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+            <a href="{% url 'register_customer' %}" class="btn btn-primary btn-sm">Register</a>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <div id="messages-container" class="mb-3">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <h2>My Shopping Cart</h2>
+
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-md-8">
+                    {% for item in cart_items %}
+                        <div class="cart-item-card">
+                            {% if item.book.cover_image %}
+                                <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }} cover">
+                            {% else %}
+                                <img src="{% static 'main/img/default_cover.png' %}" alt="Default cover">
+                            {% endif %}
+                            <div class="cart-item-details">
+                                <h5>{{ item.book.title }}</h5>
+                                <p>Price: ${{ item.book.price|floatformat:2 }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                            </div>
+                            <div class="cart-actions">
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove {{ item.book.title }} from your cart?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <h4>Cart Summary</h4>
+                        <div class="summary-detail">
+                            <span>Subtotal:</span>
+                            <span id="subtotal-price"><strong>${{ total_price|floatformat:2 }}</strong></span>
+                        </div>
+                        
+                        <div id="discount-display" class="summary-detail" style="display: none;">
+                            <span>Discount:</span>
+                            <span id="discount-amount"></span>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-3">
+                            <h6>Apply Discount Code</h6>
+                            <form id="discount-form">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="discount_code" name="code" placeholder="Enter code">
+                                    <button class="btn btn-outline-primary" type="submit">Apply</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <hr>
+
+                        <div class="summary-detail mt-3">
+                            <h5>Total:</h5>
+                            <h5 id="total-price" class="fw-bold">${{ total_price|floatformat:2 }}</h5>
+                        </div>
+
+                        <form id="checkout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100 mt-3">Proceed to Checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">Your cart is empty. <a href="{% url 'customer_dashboard' %}" class="alert-link">Start shopping now!</a></p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('discount-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = document.getElementById('discount_code').value;
+            const csrfToken = document.querySelector('#discount-form input[name="csrfmiddlewaretoken"]').value;
+
+            fetch('{% url "apply_discount" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.innerHTML = ''; // Clear previous messages
+                
+                if (data.success) {
+                    messagesContainer.innerHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            ${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.getElementById('subtotal-price').innerHTML = `<strong>$${data.subtotal.toFixed(2)}</strong>`;
+                    document.getElementById('total-price').innerHTML = `$${data.total_price.toFixed(2)}`;
+                    
+                    const discountDisplay = document.getElementById('discount-display');
+                    const discountAmount = document.getElementById('discount-amount');
+                    discountAmount.textContent = `-$${(data.subtotal - data.total_price).toFixed(2)}`;
+                    discountDisplay.style.display = 'flex';
+
+                } else {
+                    messagesContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            ${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.getElementById('discount-display').style.display = 'none';
+                    document.getElementById('total-price').innerHTML = `$${data.total_price.toFixed(2)}`;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        An error occurred while applying the discount. Please try again.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            });
+        });
+
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const csrfToken = document.querySelector('#checkout-form input[name="csrfmiddlewaretoken"]').value;
+
+            fetch('{% url "checkout" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.redirect_url;
+                } else {
+                    const messagesContainer = document.getElementById('messages-container');
+                    messagesContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            ${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        An error occurred during checkout. Please try again.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            });
+        });
+        
+    </script>
+</body>
+</html> -->
+
+<!-- 
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Digital Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/customer_dashboard2.css' %}">
+    <style>
+        body { background-color: #f4f7f9; color: #333; }
+        .navbar { box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+        .container { padding: 2rem 1rem; }
+        h2 { font-weight: 600; margin-bottom: 1.5rem; color: #2c3e50; }
+        .cart-item-card {
+            display: flex; align-items: center; padding: 20px; margin-bottom: 20px;
+            border: 1px solid #e0e0e0; border-radius: 12px; background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); transition: transform 0.2s ease-in-out;
+        }
+        .cart-item-card:hover { transform: translateY(-5px); }
+        .cart-item-card img {
+            max-width: 90px; height: auto; border-radius: 8px;
+            margin-right: 25px; object-fit: cover;
+        }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-details h5 { font-weight: 600; margin-bottom: 5px; }
+        .cart-item-details p { margin: 0; font-size: 0.95rem; color: #7f8c8d; }
+        .cart-actions { margin-left: auto; }
+        .summary-card {
+            border: 1px solid #e0e0e0; border-radius: 12px;
+            padding: 25px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        .summary-card h4 {
+            font-weight: 600; margin-bottom: 1.5rem; border-bottom: 2px solid #3498db;
+            padding-bottom: 10px; display: inline-block;
+        }
+        .summary-detail {
+            display: flex; justify-content: space-between;
+            margin-bottom: 15px; font-size: 1.1rem;
+        }
+        .summary-detail .fw-bold { font-size: 1.2rem; color: #2c3e50; }
+        .btn-success {
+            background-color: #2ecc71; border-color: #2ecc71;
+            font-weight: bold; transition: background-color 0.2s ease;
+        }
+        .btn-success:hover { background-color: #27ae60; border-color: #27ae60; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a class="navbar-brand" href="{% url 'customer_dashboard' %}">Digital Library</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="me-3">Welcome</span>
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+            <a href="{% url 'register_customer' %}" class="btn btn-primary btn-sm">Register</a>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <div id="messages-container" class="mb-3">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <h2>My Shopping Cart</h2>
+
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-md-8">
+                    {% for item in cart_items %}
+                        <div class="cart-item-card">
+                            {% if item.book.cover_image %}
+                                <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }} cover">
+                            {% else %}
+                                <img src="{% static 'main/img/default_cover.png' %}" alt="Default cover">
+                            {% endif %}
+                            <div class="cart-item-details">
+                                <h5>{{ item.book.title }}</h5>
+                                <p>Price: ${{ item.book.price|floatformat:2 }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                            </div>
+                            <div class="cart-actions">
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove {{ item.book.title }} from your cart?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <h4>Cart Summary</h4>
+                        <div class="summary-detail">
+                            <span>Subtotal:</span>
+                            <span id="subtotal-price"><strong>${{ total_price|floatformat:2 }}</strong></span>
+                        </div>
+                        
+                        <div id="discount-display" class="summary-detail" style="display: none;">
+                            <span>Discount:</span>
+                            <span id="discount-amount"></span>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-3">
+                            <h6>Apply Discount Code</h6>
+                            <form id="discount-form">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="discount_code" name="code" placeholder="Enter code">
+                                    <button class="btn btn-outline-primary" type="submit">Apply</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <hr>
+
+                        <div class="summary-detail mt-3">
+                            <h5>Total:</h5>
+                            <h5 id="total-price" class="fw-bold">${{ total_price|floatformat:2 }}</h5>
+                        </div>
+
+                        <form id="checkout-form" action="{% url 'checkout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100 mt-3">Proceed to Checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">Your cart is empty. <a href="{% url 'customer_dashboard' %}" class="alert-link">Start shopping now!</a></p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Script for applying discount code
+        document.getElementById('discount-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = document.getElementById('discount_code').value;
+            const csrfToken = document.querySelector('#discount-form input[name="csrfmiddlewaretoken"]').value;
+
+            fetch('{% url "apply_discount" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.innerHTML = ''; // Clear previous messages
+                
+                if (data.success) {
+                    messagesContainer.innerHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            ${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.getElementById('subtotal-price').innerHTML = `<strong>$${data.subtotal.toFixed(2)}</strong>`;
+                    document.getElementById('total-price').innerHTML = `$${data.total_price.toFixed(2)}`;
+                    
+                    const discountDisplay = document.getElementById('discount-display');
+                    const discountAmount = document.getElementById('discount-amount');
+                    discountAmount.textContent = `-$${(data.subtotal - data.total_price).toFixed(2)}`;
+                    discountDisplay.style.display = 'flex';
+
+                } else {
+                    messagesContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            ${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.getElementById('discount-display').style.display = 'none';
+                    document.getElementById('total-price').innerHTML = `$${data.total_price.toFixed(2)}`;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        An error occurred while applying the discount. Please try again.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            });
+        });
+
+        // Script for handling checkout
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const csrfToken = document.querySelector('#checkout-form input[name="csrfmiddlewaretoken"]').value;
+
+            fetch('{% url "checkout" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({}) // Sending an empty body as no extra data is needed
+            })
+            .then(response => {
+                // Check if the response is successful (status 2xx)
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'An error occurred on the server.');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Redirect to the specified URL after a successful checkout
+                    window.location.href = data.redirect_url;
+                } else {
+                    // Display error message
+                    const messagesContainer = document.getElementById('messages-container');
+                    messagesContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            ${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Checkout failed: ${error.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            });
+        });
+        
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+<!-- 
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Digital Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/customer_dashboard2.css' %}">
+    <style>
+        .cart-item-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background-color: #fff;
+        }
+        .cart-item-card img {
+            width: 80px;
+            height: 100px; /* Fixed height for consistency */
+            object-fit: cover; /* Ensures image covers the area without distortion */
+            margin-right: 20px;
+            border-radius: 4px;
+        }
+        .cart-item-details {
+            flex-grow: 1;
+        }
+        .cart-item-details h5 {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        .cart-item-details p {
+            margin-bottom: 3px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .cart-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .summary-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a class="navbar-brand" href="{% url 'customer_dashboard' %}">Digital Library</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="me-3">Welcome, {{ user.first_name|default:user.username }}</span>
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+            <a href="{% url 'register_customer' %}" class="btn btn-primary btn-sm">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h2>My Shopping Cart</h2>
+
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-md-8">
+                    {% for item in cart_items %}
+                        <div class="cart-item-card">
+                            {% if item.book.cover_image %}
+                                <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }} cover">
+                            {% else %}
+                                <img src="{% static 'main/img/default_cover.png' %}" alt="Default cover">
+                            {% endif %}
+                            <div class="cart-item-details">
+                                <h5>{{ item.book.title }}</h5>
+                                <p>Price: ${{ item.book.price|floatformat:2 }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                                <p>Total for item: ${{ item.total_price|floatformat:2 }}</p>
+                            </div>
+                            <div class="cart-actions">
+                                {# You can add a form here to update quantity if needed #}
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove {{ item.book.title }} from your cart?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <h4>Cart Summary</h4>
+                        <p>Total items: {{ cart_items.count }}</p>
+                        <p>Subtotal: <strong>${{ total_price|floatformat:2 }}</strong></p>
+                        {# Add discount code application form here if you want #}
+                        <form action="{% url 'checkout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100 mt-3">Proceed to Checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">Your cart is empty. <a href="{% url 'customer_dashboard' %}?tab=browse-books" class="alert-link">Start Browse books!</a></p>
+        {% endif %}
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> -->
+
+
+
+
+<!-- 
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Digital Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/customer_dashboard2.css' %}">
+    <style>
+        .cart-item-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background-color: #fff;
+        }
+        .cart-item-card img {
+            width: 80px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 20px;
+            border-radius: 4px;
+        }
+        .cart-item-details {
+            flex-grow: 1;
+        }
+        .cart-item-details h5 {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        .cart-item-details p {
+            margin-bottom: 3px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .cart-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .summary-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background-color: #fff;
+        }
+        .summary-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a class="navbar-brand" href="{% url 'customer_dashboard' %}">Digital Library</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="me-3">Welcome, {{ user.first_name|default:user.username }}</span>
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+            <a href="{% url 'register_customer' %}" class="btn btn-primary btn-sm">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h2>My Shopping Cart</h2>
+
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-md-8">
+                    {% for item in cart_items %}
+                        <div class="cart-item-card">
+                            {% if item.book.cover_image %}
+                                <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }} cover">
+                            {% else %}
+                                <img src="{% static 'main/img/default_cover.png' %}" alt="Default cover">
+                            {% endif %}
+                            <div class="cart-item-details">
+                                <h5>{{ item.book.title }}</h5>
+                                <p>Price: ${{ item.book.price|floatformat:2 }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                            </div>
+                            <div class="cart-actions">
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove {{ item.book.title }} from your cart?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <h4>Cart Summary</h4>
+                        <div class="summary-detail">
+                            <span>Subtotal:</span>
+                            <span><strong>${{ total_price|floatformat:2 }}</strong></span>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="mb-3">
+                            <h6>Apply Discount Code</h6>
+                            <form id="apply-discount-form">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Enter code" id="discount-code-input">
+                                    <button class="btn btn-outline-primary" type="submit">Apply</button>
+                                </div>
+                            </form>
+                            <div id="discount-message" class="mt-2"></div>
+                        </div>
+
+                        <hr>
+                        
+                        <div class="summary-detail mt-3">
+                            <h5>Total:</h5>
+                            <h5 class="fw-bold">${{ total_price|floatformat:2 }}</h5>
+                        </div>
+
+                        <form action="{% url 'checkout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100 mt-3">Proceed to Checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">Your cart is empty. <a href="{% url 'customer_dashboard' %}?tab=browse-books" class="alert-link">Start shopping now!</a></p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const discountForm = document.getElementById('apply-discount-form');
+            if (discountForm) {
+                discountForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const discountCode = document.getElementById('discount-code-input').value;
+                    const discountMessage = document.getElementById('discount-message');
+
+                    fetch('{% url "apply_discount" %}', {
+                        method: 'POST',
+                        body: JSON.stringify({ code: discountCode }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            discountMessage.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                            window.location.reload(); 
+                        } else {
+                            discountMessage.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        discountMessage.innerHTML = `<div class="alert alert-danger">An unexpected error occurred.</div>`;
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html> 
+
+
+
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Digital Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/customer_dashboard2.css' %}">
+    <style>
+        /* ... (Your existing styles) ... */
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a class="navbar-brand" href="{% url 'customer_dashboard' %}">Digital Library</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="me-3">Welcome, {{ user.first_name|default:user.username }}</span>
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+            <a href="{% url 'register_customer' %}" class="btn btn-primary btn-sm">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h2>My Shopping Cart</h2>
+
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-md-8">
+                    {% for item in cart_items %}
+                        <div class="cart-item-card">
+                            {% if item.book.cover_image %}
+                                <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }} cover">
+                            {% else %}
+                                <img src="{% static 'main/img/default_cover.png' %}" alt="Default cover">
+                            {% endif %}
+                            <div class="cart-item-details">
+                                <h5>{{ item.book.title }}</h5>
+                                <p>Price: ${{ item.book.price|floatformat:2 }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                            </div>
+                            <div class="cart-actions">
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove {{ item.book.title }} from your cart?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <h4>Cart Summary</h4>
+                        <div class="summary-detail">
+                            <span>Subtotal:</span>
+                            <span><strong>${{ total_price|floatformat:2 }}</strong></span>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="mb-3">
+                            <h6>Apply Discount Code</h6>
+                            <form id="apply-discount-form">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Enter code" id="discount-code-input">
+                                    <button class="btn btn-outline-primary" type="submit">Apply</button>
+                                </div>
+                            </form>
+                            <div id="discount-message" class="mt-2"></div>
+                        </div>
+
+                        <hr>
+                        
+                        <div class="summary-detail mt-3">
+                            <h5>Total:</h5>
+                            <h5 class="fw-bold">${{ total_price|floatformat:2 }}</h5>
+                        </div>
+
+                        <button id="buy-now-button" class="btn btn-success w-100 mt-3">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">Your cart is empty. <a href="{% url 'customer_dashboard' %}?tab=browse-books" class="alert-link">Start shopping now!</a></p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const discountForm = document.getElementById('apply-discount-form');
+            if (discountForm) {
+                discountForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const discountCode = document.getElementById('discount-code-input').value;
+                    const discountMessage = document.getElementById('discount-message');
+
+                    fetch('{% url "apply_discount" %}', {
+                        method: 'POST',
+                        body: JSON.stringify({ code: discountCode }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            discountMessage.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                            window.location.reload(); 
+                        } else {
+                            discountMessage.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        discountMessage.innerHTML = `<div class="alert alert-danger">An unexpected error occurred.</div>`;
+                    });
+                });
+            }
+
+            // New JavaScript to handle the "Buy Now" button
+            const buyNowButton = document.getElementById('buy-now-button');
+            if (buyNowButton) {
+                buyNowButton.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to purchase all items in your cart?')) {
+                        // Redirect to a new view that handles the purchase logic
+                        window.location.href = '{% url "purchase_cart" %}';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Digital Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/customer_dashboard2.css' %}">
+    <style>
+        body {
+            background-color: #f4f7f9;
+            color: #333;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .container {
+            padding: 2rem 1rem;
+        }
+
+        h2 {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+
+        .cart-item-card {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .cart-item-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .cart-item-card img {
+            max-width: 90px;
+            height: auto;
+            border-radius: 8px;
+            margin-right: 25px;
+            object-fit: cover;
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        .cart-item-details h5 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-details p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #7f8c8d;
+        }
+
+        .cart-actions {
+            margin-left: auto;
+        }
+
+        .summary-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 25px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .summary-card h4 {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .summary-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .summary-detail .fw-bold {
+            font-size: 1.2rem;
+            color: #2c3e50;
+        }
+
+        .btn-success {
+            background-color: #2ecc71;
+            border-color: #2ecc71;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+            border-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a class="navbar-brand" href="{% url 'customer_dashboard' %}">Digital Library</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="me-3">Welcome, {{ user.first_name|default:user.username }}</span>
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+            <a href="{% url 'register_customer' %}" class="btn btn-primary btn-sm">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h2>My Shopping Cart</h2>
+
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-md-8">
+                    {% for item in cart_items %}
+                        <div class="cart-item-card">
+                            {% if item.book.cover_image %}
+                                <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }} cover">
+                            {% else %}
+                                <img src="{% static 'main/img/default_cover.png' %}" alt="Default cover">
+                            {% endif %}
+                            <div class="cart-item-details">
+                                <h5>{{ item.book.title }}</h5>
+                                <p>Price: ${{ item.book.price|floatformat:2 }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                            </div>
+                            <div class="cart-actions">
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove {{ item.book.title }} from your cart?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <h4>Cart Summary</h4>
+                        <div class="summary-detail">
+                            <span>Subtotal:</span>
+                            <span><strong>${{ total_price|floatformat:2 }}</strong></span>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="mb-3">
+                            <h6>Apply Discount Code</h6>
+                            <form action="{% url 'apply_discount' %}" method="post">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="code" placeholder="Enter code">
+                                    <button class="btn btn-outline-primary" type="submit">Apply</button>
+                                </div>
+                            </form>
+                            <div id="discount-message" class="mt-2"></div>
+                        </div>
+
+                        <hr>
+                        
+                        <div class="summary-detail mt-3">
+                            <h5>Total:</h5>
+                            <h5 class="fw-bold">${{ total_price|floatformat:2 }}</h5>
+                        </div>
+
+                        <form action="{% url 'checkout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100 mt-3">Proceed to Checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">Your cart is empty. <a href="{% url 'customer_dashboard' %}?tab=browse-books" class="alert-link">Start shopping now!</a></p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Digital Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/customer_dashboard2.css' %}">
+    <style>
+        body { background-color: #f4f7f9; color: #333; }
+        .navbar { box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+        .container { padding: 2rem 1rem; }
+        h2 { font-weight: 600; margin-bottom: 1.5rem; color: #2c3e50; }
+        .cart-item-card {
+            display: flex; align-items: center; padding: 20px; margin-bottom: 20px;
+            border: 1px solid #e0e0e0; border-radius: 12px; background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); transition: transform 0.2s ease-in-out;
+        }
+        .cart-item-card:hover { transform: translateY(-5px); }
+        .cart-item-card img {
+            max-width: 90px; height: auto; border-radius: 8px;
+            margin-right: 25px; object-fit: cover;
+        }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-details h5 { font-weight: 600; margin-bottom: 5px; }
+        .cart-item-details p { margin: 0; font-size: 0.95rem; color: #7f8c8d; }
+        .cart-actions { margin-left: auto; }
+        .summary-card {
+            border: 1px solid #e0e0e0; border-radius: 12px;
+            padding: 25px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        .summary-card h4 {
+            font-weight: 600; margin-bottom: 1.5rem; border-bottom: 2px solid #3498db;
+            padding-bottom: 10px; display: inline-block;
+        }
+        .summary-detail {
+            display: flex; justify-content: space-between;
+            margin-bottom: 15px; font-size: 1.1rem;
+        }
+        .summary-detail .fw-bold { font-size: 1.2rem; color: #2c3e50; }
+        .btn-success {
+            background-color: #2ecc71; border-color: #2ecc71;
+            font-weight: bold; transition: background-color 0.2s ease;
+        }
+        .btn-success:hover { background-color: #27ae60; border-color: #27ae60; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a class="navbar-brand" href="{% url 'customer_dashboard' %}">Digital Library</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="me-3">Welcome, {{ user.first_name|default:user.username }}</span>
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+            <a href="{% url 'register_customer' %}" class="btn btn-primary btn-sm">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h2>My Shopping Cart</h2>
+
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-md-8">
+                    {% for item in cart_items %}
+                        <div class="cart-item-card">
+                            {% if item.book.cover_image %}
+                                <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }} cover">
+                            {% else %}
+                                <img src="{% static 'main/img/default_cover.png' %}" alt="Default cover">
+                            {% endif %}
+                            <div class="cart-item-details">
+                                <h5>{{ item.book.title }}</h5>
+                                <p>Price: ${{ item.book.price|floatformat:2 }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                            </div>
+                            <div class="cart-actions">
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove {{ item.book.title }} from your cart?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <h4>Cart Summary</h4>
+                        <div class="summary-detail">
+                            <span>Subtotal:</span>
+                            <span id="subtotal-price"><strong>${{ total_price|floatformat:2 }}</strong></span>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-3">
+                            <h6>Apply Discount Code</h6>
+                            <form id="discount-form" action="{% url 'apply_discount' %}" method="post">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="id_discount_code" name="code" placeholder="Enter code">
+                                    <button class="btn btn-outline-primary" type="submit">Apply</button>
+                                </div>
+                            </form>
+                            <div id="discount-message" class="mt-2"></div>
+                        </div>
+
+                        <hr>
+
+                        <div class="summary-detail mt-3">
+                            <h5>Total:</h5>
+                            <h5 id="total-price" class="fw-bold">${{ total_price|floatformat:2 }}</h5>
+                        </div>
+
+                        <form id="checkout-form" action="{% url 'checkout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100 mt-3">Proceed to Checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">Your cart is empty. <a href="{% url 'customer_dashboard' %}" class="alert-link">Start shopping now!</a></p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('discount-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the form from submitting normally
+
+            const form = e.target;
+            const discountCode = document.getElementById('id_discount_code').value;
+            const csrfToken = form.querySelector('[name="csrfmiddlewaretoken"]').value;
+            const discountMessageDiv = document.getElementById('discount-message');
+            const totalElement = document.getElementById('total-price');
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ code: discountCode })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    discountMessageDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                    totalElement.innerHTML = `<strong>$${data.new_total.toFixed(2)}</strong>`;
+                } else {
+                    discountMessageDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                }
+            })
+            .catch(error => {
+                discountMessageDiv.innerHTML = `<div class="alert alert-danger">An unexpected error occurred.</div>`;
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Digital Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/customer_dashboard2.css' %}">
+    <style>
+        body { background-color: #f4f7f9; color: #333; }
+        .navbar { box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+        .container { padding: 2rem 1rem; }
+        h2 { font-weight: 600; margin-bottom: 1.5rem; color: #2c3e50; }
+        .cart-item-card {
+            display: flex; align-items: center; padding: 20px; margin-bottom: 20px;
+            border: 1px solid #e0e0e0; border-radius: 12px; background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); transition: transform 0.2s ease-in-out;
+        }
+        .cart-item-card:hover { transform: translateY(-5px); }
+        .cart-item-card img {
+            max-width: 90px; height: auto; border-radius: 8px;
+            margin-right: 25px; object-fit: cover;
+        }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-details h5 { font-weight: 600; margin-bottom: 5px; }
+        .cart-item-details p { margin: 0; font-size: 0.95rem; color: #7f8c8d; }
+        .cart-actions { margin-left: auto; }
+        .summary-card {
+            border: 1px solid #e0e0e0; border-radius: 12px;
+            padding: 25px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        .summary-card h4 {
+            font-weight: 600; margin-bottom: 1.5rem; border-bottom: 2px solid #3498db;
+            padding-bottom: 10px; display: inline-block;
+        }
+        .summary-detail {
+            display: flex; justify-content: space-between;
+            margin-bottom: 15px; font-size: 1.1rem;
+        }
+        .summary-detail .fw-bold { font-size: 1.2rem; color: #2c3e50; }
+        .btn-success {
+            background-color: #2ecc71; border-color: #2ecc71;
+            font-weight: bold; transition: background-color 0.2s ease;
+        }
+        .btn-success:hover { background-color: #27ae60; border-color: #27ae60; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a class="navbar-brand" href="{% url 'customer_dashboard' %}">Digital Library</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="me-3">Welcome</span>
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+            <a href="{% url 'register_customer' %}" class="btn btn-primary btn-sm">Register</a>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <div id="messages-container" class="mb-3">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <h2>My Shopping Cart</h2>
+
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-md-8">
+                    {% for item in cart_items %}
+                        <div class="cart-item-card">
+                            {% if item.book.cover_image %}
+                                <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }} cover">
+                            {% else %}
+                                <img src="{% static 'main/img/default_cover.png' %}" alt="Default cover">
+                            {% endif %}
+                            <div class="cart-item-details">
+                                <h5>{{ item.book.title }}</h5>
+                                <p>Price: ${{ item.book.price|floatformat:2 }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                            </div>
+                            <div class="cart-actions">
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove {{ item.book.title }} from your cart?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <h4>Cart Summary</h4>
+                        <div class="summary-detail">
+                            <span>Subtotal:</span>
+                            <span id="subtotal-price"><strong>${{ total_price|floatformat:2 }}</strong></span>
+                        </div>
+                        
+                        <div id="discount-display" class="summary-detail" style="display: none;">
+                            <span>Discount:</span>
+                            <span id="discount-amount"></span>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-3">
+                            <h6>Apply Discount Code</h6>
+                            <form id="discount-form">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="discount_code" name="code" placeholder="Enter code">
+                                    <button class="btn btn-outline-primary" type="submit">Apply</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <hr>
+
+                        <div class="summary-detail mt-3">
+                            <h5>Total:</h5>
+                            <h5 id="total-price" class="fw-bold">${{ total_price|floatformat:2 }}</h5>
+                        </div>
+
+                        <form id="checkout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100 mt-3">Proceed to Checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">Your cart is empty. <a href="{% url 'customer_dashboard' %}" class="alert-link">Start shopping now!</a></p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('discount-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = document.getElementById('discount_code').value;
+            const csrfToken = document.querySelector('#discount-form input[name="csrfmiddlewaretoken"]').value;
+
+            fetch('{% url "apply_discount" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.innerHTML = ''; // Clear previous messages
+                
+                if (data.success) {
+                    messagesContainer.innerHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            ${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.getElementById('subtotal-price').innerHTML = `<strong>$${data.subtotal.toFixed(2)}</strong>`;
+                    document.getElementById('total-price').innerHTML = `$${data.total_price.toFixed(2)}`;
+                    
+                    const discountDisplay = document.getElementById('discount-display');
+                    const discountAmount = document.getElementById('discount-amount');
+                    discountAmount.textContent = `-$${(data.subtotal - data.total_price).toFixed(2)}`;
+                    discountDisplay.style.display = 'flex';
+
+                } else {
+                    messagesContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            ${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.getElementById('discount-display').style.display = 'none';
+                    document.getElementById('total-price').innerHTML = `$${data.total_price.toFixed(2)}`;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        An error occurred while applying the discount. Please try again.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            });
+        });
+
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const csrfToken = document.querySelector('#checkout-form input[name="csrfmiddlewaretoken"]').value;
+
+            fetch('{% url "checkout" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.redirect_url;
+                } else {
+                    const messagesContainer = document.getElementById('messages-container');
+                    messagesContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            ${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        An error occurred during checkout. Please try again.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            });
+        });
+        
+    </script>
+</body>
+</html> -->
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Digital Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/customer_dashboard2.css' %}">
+    <style>
+        body { background-color: #f4f7f9; color: #333; }
+        .navbar { box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+        .container { padding: 2rem 1rem; }
+        h2 { font-weight: 600; margin-bottom: 1.5rem; color: #2c3e50; }
+        .cart-item-card {
+            display: flex; align-items: center; padding: 20px; margin-bottom: 20px;
+            border: 1px solid #e0e0e0; border-radius: 12px; background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); transition: transform 0.2s ease-in-out;
+        }
+        .cart-item-card:hover { transform: translateY(-5px); }
+        .cart-item-card img {
+            max-width: 90px; height: auto; border-radius: 8px;
+            margin-right: 25px; object-fit: cover;
+        }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-details h5 { font-weight: 600; margin-bottom: 5px; }
+        .cart-item-details p { margin: 0; font-size: 0.95rem; color: #7f8c8d; }
+        .cart-actions { margin-left: auto; }
+        .summary-card {
+            border: 1px solid #e0e0e0; border-radius: 12px;
+            padding: 25px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        .summary-card h4 {
+            font-weight: 600; margin-bottom: 1.5rem; border-bottom: 2px solid #3498db;
+            padding-bottom: 10px; display: inline-block;
+        }
+        .summary-detail {
+            display: flex; justify-content: space-between;
+            margin-bottom: 15px; font-size: 1.1rem;
+        }
+        .summary-detail .fw-bold { font-size: 1.2rem; color: #2c3e50; }
+        .btn-success {
+            background-color: #2ecc71; border-color: #2ecc71;
+            font-weight: bold; transition: background-color 0.2s ease;
+        }
+        .btn-success:hover { background-color: #27ae60; border-color: #27ae60; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a class="navbar-brand" href="{% url 'customer_dashboard' %}">Digital Library</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="me-3">Welcome</span>
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Login</a>
+            <a href="{% url 'register_customer' %}" class="btn btn-primary btn-sm">Register</a>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <div id="messages-container" class="mb-3">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <h2>My Shopping Cart</h2>
+
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-md-8">
+                    {% for item in cart_items %}
+                        <div class="cart-item-card">
+                            {% if item.book.cover_image %}
+                                <img src="{{ item.book.cover_image.url }}" alt="{{ item.book.title }} cover">
+                            {% else %}
+                                <img src="{% static 'main/img/default_cover.png' %}" alt="Default cover">
+                            {% endif %}
+                            <div class="cart-item-details">
+                                <h5>{{ item.book.title }}</h5>
+                                <p>Price: ${{ item.book.price|floatformat:2 }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                            </div>
+                            <div class="cart-actions">
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove {{ item.book.title }} from your cart?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card">
+                        <h4>Cart Summary</h4>
+                        <div class="summary-detail">
+                            <span>Subtotal:</span>
+                            <span id="subtotal-price"><strong>${{ total_price|floatformat:2 }}</strong></span>
+                        </div>
+                        
+                        <div id="discount-display" class="summary-detail" style="display: none;">
+                            <span>Discount:</span>
+                            <span id="discount-amount"></span>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-3">
+                            <h6>Apply Discount Code</h6>
+                            <form id="discount-form">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="discount_code" name="code" placeholder="Enter code">
+                                    <button class="btn btn-outline-primary" type="submit">Apply</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <hr>
+
+                        <div class="summary-detail mt-3">
+                            <h5>Total:</h5>
+                            <h5 id="total-price" class="fw-bold">${{ total_price|floatformat:2 }}</h5>
+                        </div>
+
+                        <form id="checkout-form" action="{% url 'checkout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100 mt-3">Proceed to Checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-info">Your cart is empty. <a href="{% url 'customer_dashboard' %}" class="alert-link">Start shopping now!</a></p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Script for applying discount code
+        document.getElementById('discount-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = document.getElementById('discount_code').value;
+            const csrfToken = document.querySelector('#discount-form input[name="csrfmiddlewaretoken"]').value;
+
+            fetch('{% url "apply_discount" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.innerHTML = ''; // Clear previous messages
+                
+                if (data.success) {
+                    messagesContainer.innerHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            ${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.getElementById('subtotal-price').innerHTML = `<strong>$${data.subtotal.toFixed(2)}</strong>`;
+                    document.getElementById('total-price').innerHTML = `$${data.total_price.toFixed(2)}`;
+                    
+                    const discountDisplay = document.getElementById('discount-display');
+                    const discountAmount = document.getElementById('discount-amount');
+                    discountAmount.textContent = `-$${(data.subtotal - data.total_price).toFixed(2)}`;
+                    discountDisplay.style.display = 'flex';
+
+                } else {
+                    messagesContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            ${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.getElementById('discount-display').style.display = 'none';
+                    document.getElementById('total-price').innerHTML = `$${data.total_price.toFixed(2)}`;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        An error occurred while applying the discount. Please try again.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            });
+        });
+
+        // Script for handling checkout
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const csrfToken = document.querySelector('#checkout-form input[name="csrfmiddlewaretoken"]').value;
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    console.log(document.cookie)
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+        return parts.pop().split(';').shift();
+    }
+    return null;
+}
+
+// استفاده:
+const token = getCookie('auth_token');
+console.log(token);
+            fetch('{% url "checkout" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`
+
+                },
+                body: JSON.stringify({}) // Sending an empty body as no extra data is needed
+            })
+            .then(response => {
+                // Check if the response is successful (status 2xx)
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'An error occurred on the server.');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Redirect to the specified URL after a successful checkout
+                    window.location.href = data.redirect_url;
+                } else {
+                    // Display error message
+                    const messagesContainer = document.getElementById('messages-container');
+                    messagesContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            ${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Checkout failed: ${error.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            });
+        });
+
+       // C:\Users\msi\Desktop\Digital-Library-MonDor-main-new8\Digital-Library-MonDor-main\api\cart.html
+
+// Script for handling checkout
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const csrfToken = document.querySelector('#checkout-form input[name="csrfmiddlewaretoken"]').value;
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) {
+            return parts.pop().split(';').shift();
+        }
+        return null;
+    }
+
+    const token = getCookie('auth_token');
+
+    // Make the fetch request
+    fetch('{% url "checkout" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`,
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({}) // Sending an empty body
+    })
+    .then(response => {
+        // Always return the JSON data, regardless of the response status.
+        // We'll check the status and handle the data in the next .then() block.
+        return response.json().then(data => ({
+            status: response.status,
+            ok: response.ok,
+            data: data
+        }));
+    })
+    .then(result => {
+        const messagesContainer = document.getElementById('messages-container');
+        messagesContainer.innerHTML = ''; // Clear previous messages
+        
+        // This is the correct way to handle both success and error responses
+        if (result.ok) {
+            // Success response
+            messagesContainer.innerHTML = `
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ${result.data.message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            // Redirect to the specified URL after a successful checkout
+            window.location.href = result.data.redirect_url;
+            
+        } else {
+            // Error response (e.g., 400 Bad Request from an empty cart)
+            messagesContainer.innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ${result.data.error}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            // Do not redirect on error.
+        }
+    })
+    .catch(error => {
+        console.error('Network or unexpected error:', error);
+        const messagesContainer = document.getElementById('messages-container');
+        messagesContainer.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                An unexpected error occurred. Please try again.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+    });
+}); 
+    </script>
+</body>
+</html>

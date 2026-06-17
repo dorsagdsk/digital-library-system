@@ -1,0 +1,408 @@
+/* Custom Color Variables - Makes colors easier to manage */
+:root {
+    --color-darkest: #150e08; /* Very Dark Brown/Black */
+    --color-dark: #1f1008;    /* Dark Brown/Black */
+    --color-medium-dark: #402615; /* Dark Brown */
+    --color-medium: #74563e;   /* Medium Brown */
+    --color-light-brown: #8f6c4b; /* Brown-Gray */
+    --color-accent-brown: #855944; /* Medium Brown/Tan for buttons */
+    --color-accent-gold: #ae8e6d; /* Warm Tan/Brown for links/icons */
+    --color-light-accent: #c3967a; /* Warm Tan for primary accents */
+    --color-lighter-accent: #cfa48e; /* Lighter Warm Tan for hover */
+    --color-light: #ccb092;   /* Light Tan for main text */
+}
+
+/* --- Font Imports --- */
+/* Using Google Fonts for a more distinct look. */
+/* Open Sans for body text (readable, modern) */
+/* Playfair Display for headings (elegant, classic, good for "library") */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playfair+Display:wght@700&display=swap');
+
+
+/* --- General Body and Container Styles --- */
+body {
+    font-family: 'Open Sans', sans-serif; /* Changed body font */
+    margin: 0;
+    padding: 0;
+    background-color: #cfa48e;
+    color: var(--color-light);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+a {
+    color: var(--color-accent-gold);
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+a:hover {
+    color: var(--color-lighter-accent);
+    transform: translateY(-2px);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif; /* Changed heading font */
+    color: var(--color-light-accent);
+    margin-top: 0;
+    margin-bottom: 0.8em;
+    font-weight: 700; /* Playfair Display often uses 700 for bold */
+}
+
+/* --- Header Styles (Revised) --- */
+.header {
+    background-color: var(--color-darkest);
+    padding: 15px 20px; /* Slightly reduced padding to make it more compact but still spacious */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Stronger, more refined shadow */
+    border-bottom: 2px solid var(--color-medium-dark);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-left {
+    flex-grow: 1; /* Allows search section to take available space */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Aligns search to the left */
+    gap: 15px; /* Space between search box and potential future elements */
+}
+
+/* Consolidated Search Bar Styling */
+.search-bar-group { /* New wrapper for search box and button */
+    display: flex;
+    background-color: var(--color-medium-dark);
+    border-radius: 25px; /* Fully rounded search bar */
+    overflow: hidden;
+    padding: 3px; /* Internal padding for the group */
+    border: 1px solid var(--color-medium-dark); /* Subtle border for the group */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
+}
+
+#search-box {
+    padding: 8px 15px; /* Adjusted padding */
+    border: none;
+    background-color: transparent; /* Transparent to show group background */
+    color: var(--color-light);
+    width: 250px;
+    outline: none;
+    font-size: 1em; /* Consistent font size */
+}
+
+#search-box::placeholder {
+    color: var(--color-light-brown);
+    opacity: 0.7; /* Slightly more subtle */
+}
+
+#search-button {
+    background-color: var(--color-accent-brown);
+    color: white;
+    border: none;
+    padding: 8px 15px; /* Adjusted padding */
+    border-radius: 20px; /* Rounded button inside search bar */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em; /* Consistent font size */
+}
+
+#search-button:hover {
+    background-color: var(--color-medium);
+    transform: scale(1.02); /* Less aggressive scale */
+}
+
+.header-center {
+    flex-grow: 2; /* Allows title to take more central space */
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.2em; /* Slightly adjusted size */
+    color: var(--color-light);
+    display: inline-flex; /* Use inline-flex to center content while allowing flex properties */
+    align-items: center;
+    gap: 10px;
+    margin: 0; /* Remove default margin from h1 */
+}
+
+.header h1 i.fas.fa-book {
+    color: var(--color-light-accent);
+    font-size: 1.1em;
+}
+
+.header img.library-icon {
+    width: 30px; /* Slightly smaller for better integration */
+    height: 30px;
+    vertical-align: middle;
+    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.15)); /* More subtle glow */
+}
+
+.header-right {
+    flex-grow: 1; /* Allows login to take available space */
+    display: flex;
+    justify-content: flex-end; /* Aligns login button to the right */
+    align-items: center;
+}
+
+#login-button {
+    background-color: var(--color-light-accent);
+    color: var(--color-darkest);
+    padding: 10px 22px; /* Adjusted padding */
+    border-radius: 25px; /* More rounded, pill-like button */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center content in button */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    font-size: 1em; /* Reduced font size for better fit */
+    font-weight: 700; /* Bolder for prominence */
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for button */
+}
+
+#login-button i {
+    margin-right: 8px; /* Slightly less margin */
+    font-size: 1.1em; /* Adjusted icon size */
+}
+
+#login-button:hover {
+    background-color: var(--color-lighter-accent);
+    color: var(--color-darkest);
+    transform: translateY(-3px); /* More noticeable lift */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+/* --- Category Cards (bar) Styles --- */
+#bar {
+    margin-top: 35px;
+    padding: 30px 20px;
+    background-color: var(--color-darkest);
+    box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.2);
+    border-top: 1px solid var(--color-medium-dark);
+    border-bottom: 1px solid var(--color-medium-dark);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.bar {
+    background-color: var(--color-medium-dark);
+    border-radius: 10px;
+    padding: 20px 25px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    min-width: 160px;
+    flex-basis: calc(25% - 25px);
+    max-width: 200px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--color-medium); /* Add a subtle border */
+}
+
+.bar:hover {
+    transform: translateY(-8px);
+    background-color: var(--color-medium);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Stronger shadow on hover */
+    border-color: var(--color-accent-gold); /* Highlight border on hover */
+}
+
+.bar img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.15));
+}
+
+.bar h1 {
+    font-size: 1.4em;
+    margin: 0;
+    color: var(--color-light);
+}
+
+/* --- Book List Styles --- */
+.book-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 40px;
+    padding: 40px 30px;
+    background-color: var(--color-dark);
+}
+
+/* Example Book Card */
+.book-item {
+    background-color: var(--color-medium-dark);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding-bottom: 15px;
+    border: 1px solid var(--color-medium); /* Subtle border for book items */
+}
+
+.book-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Stronger shadow on hover */
+}
+
+.book-item img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--color-medium);
+    margin-bottom: 15px;
+}
+
+.book-item h4 {
+    color: var(--color-light);
+    font-size: 1.3em;
+    margin: 0 15px 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.book-item p {
+    color: var(--color-light-brown);
+    font-size: 0.95em;
+    margin: 0 15px 15px;
+}
+
+.book-item .action-button {
+    background-color: var(--color-light-accent);
+    color: var(--color-darkest);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin: 0 15px;
+}
+
+.book-item .action-button:hover {
+    background-color: var(--color-lighter-accent);
+    transform: translateY(-2px);
+}
+
+/* --- Footer Styles --- */
+.footer {
+    background-color: var(--color-darkest);
+    color: var(--color-light-brown);
+    padding: 25px 20px;
+    text-align: center;
+    font-size: 1em;
+    border-top: 2px solid var(--color-medium-dark);
+    margin-top: 40px;
+}
+
+.footer .container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.footer-left,
+.footer-right {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.footer-left i,
+.footer-right i {
+    margin-right: 10px;
+    color: var(--color-accent-gold);
+    font-size: 1.2em;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1024px) {
+    .book-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column; /* Stack header elements */
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .header-left, .header-center, .header-right {
+        width: 100%; /* Take full width */
+        justify-content: center; /* Center content horizontally */
+        text-align: center; /* Ensure h1 text is centered */
+    }
+
+    .header h1 {
+        font-size: 26px;
+        justify-content: center; /* Center icons and text */
+    }
+
+    .search-bar-group {
+        width: 80%; /* Adjust width for smaller screens */
+        max-width: 400px; /* Prevent it from getting too wide */
+    }
+
+    #search-box {
+        width: calc(100% - 70px); /* Adjust for button */
+    }
+
+    #bar {
+        padding: 20px 15px;
+        gap: 20px;
+    }
+
+    .bar {
+        width: calc(50% - 20px); /* Two columns on medium screens */
+        max-width: none;
+        flex-basis: auto;
+    }
+
+    .book-list {
+        grid-template-columns: 1fr;
+        padding: 20px 15px;
+        gap: 20px;
+    }
+
+    .footer .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 22px;
+    }
+    #login-button {
+        font-size: 0.9em; /* Smaller font on very small screens */
+        padding: 8px 15px;
+    }
+    .search-bar-group {
+        width: 95%; /* Wider on very small screens */
+    }
+    #search-box {
+        width: calc(100% - 60px);
+    }
+    .bar {
+        width: 100%;
+    }
+}

@@ -1,0 +1,110 @@
+/* استایل عمومی صفحه پروفایل */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    margin-left: 20px;
+}
+
+.profile-container {
+    direction: rtl;
+    padding: 20px;
+    background-color: white;
+    margin: 20px auto;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-container h2 {
+    color: #4CAF50;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+#profile-info p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+#profile-info strong {
+    color: #4CAF50;
+}
+
+/* استایل آدرس‌ها */
+.addresses-container {
+    margin-top: 30px;
+}
+
+.addresses-container h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+#addresses-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#addresses-list li {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+form label {
+    font-size: 16px;
+    margin-top: 10px;
+    display: block;
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+form button {
+    margin-top: 20px;
+    background-color: #007bff;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}

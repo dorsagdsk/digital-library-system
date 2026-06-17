@@ -1,0 +1,27 @@
+<!-- templates/main/update_profile.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Update Profile</title>
+</head>
+<body>
+    <h1>Update Your Profile</h1>
+
+    <form method="post" action="">
+        {% csrf_token %}
+        <!-- فرض می‌کنم که از فرم دجانگو استفاده می‌کنی -->
+        {{ form.as_p }}
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+</html>

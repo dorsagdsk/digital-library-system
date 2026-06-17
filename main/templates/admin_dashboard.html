@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Admin Dashboard</title> {# Updated title #}
+    <!-- <link rel="stylesheet" href="{% static 'css/admin_style.css' %}"> {# Assuming a new admin-specific CSS file #} -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}"> {# Assuming a new admin-specific CSS file #}
+
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-left">
+                <input type="text" id="search-box" placeholder="Search books or users..."> {# Updated search placeholder #}
+                <button id="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="header-center">
+                <!-- <h1>
+                    <i class="fas fa-book" style="color: #4CAF50;"></i> {# Changed icon to a book, adjusted color #}
+                    <img src="{% static 'images/library_icon.png' %}" alt="Library Icon" class="library-icon" style="width: 30px; height: 30px; vertical-align: middle;"> {# Placeholder for a library icon #}
+                    Library Admin Panel {# Changed text #}
+                    <img src="{% static 'images/library_icon.png' %}" alt="Library Icon" class="library-icon" style="width: 30px; height: 30px; vertical-align: middle;"> {# Placeholder for a library icon #}
+                </h1> -->
+                <h1> Admin Panel </h1>
+            </div>
+            <div class="header-right">
+{#                <button id="logout-button">#}
+{#                    <i class="fas fa-sign-out-alt"></i> Logout#}
+{#                </button>#}
+                <button id="logout-button"><i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar">
+        <h3>Admin Panel</h3> {# Translated #}
+        <ul>
+            <li><a href="/add-book"><i class="fas fa-book-medical"></i> Add New Book</a></li> {# Changed to Add Book #}
+            <li><a href="/add-author"><i class="fas fa-feather-alt"></i> Add New Author</a></li> {# New: Add Author #}
+            <li><a href="/manage-books/"><i class="fas fa-book-open"></i> Manage Books</a></li> {# Changed to Manage Books #}
+            <li><a href="/manage_authors/"><i class="fas fa-users"></i> Manage Authors</a></li> {# Changed to Manage Authors #}
+            <li><a href="/manage-users/"><i class="fas fa-user-friends"></i> Manage Users</a></li> {# Changed to Manage Users (was employees) #}
+            <li><a href="/add-discount-code"><i class="fas fa-tags"></i> Add Discount Code</a></li> {# New: Add Discount Code #}
+            <li><a href="{% url 'manage_discount_codes_page' %}"><i class="fas fa-tags"></i> Manage Discout</a></li>
+            <li><a href="/view-orders"><i class="fas fa-receipt"></i> View Orders</a></li> {# Changed from 'View Best-Selling Foods' to 'View Orders' #}
+            <li><a href="/view-statistics"><i class="fas fa-chart-line"></i> View Statistics</a></li> {# Changed from 'View Best-Selling Foods' to 'View Statistics' #}
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h2> </h2> {# Translated and changed #}
+        <div>
+            <br><br><br>
+                  <h2>This is Admin Panel Welcome Dear!</h2>
+
+        </div>
+    </div>
+
+    <script src="{% static 'js/admin_dashboard.js' %}"></script> {# This JS will need significant updates #}
+    <script src="{% static 'js/logout.js' %}"></script> {# This might remain similar #}
+</body>
+</html>

@@ -1,0 +1,177 @@
+/* General Body Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5ebe0ff; /* Linen */
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    background-image: linear-gradient(135deg, #f5ebe0ff, #e3d5caff); /* Subtle gradient for depth */
+}
+
+/* Container for the Form */
+.container {
+    background-color: #edede9ff; /* Isabelline */
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Heading */
+h1 {
+    text-align: center;
+    color: #d5bdafff; /* Pale Dogwood for a soft heading */
+    margin-bottom: 30px;
+    font-size: 2.2em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+    font-size: 1em;
+}
+
+/* Input Field Styling */
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="email"],
+.form-group input[type="tel"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #d6ccc2ff; /* Timberwolf for border */
+    border-radius: 8px;
+    font-size: 1.05em;
+    color: #333;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="password"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="tel"]:focus {
+    border-color: #d5bdafff; /* Pale Dogwood on focus */
+    box-shadow: 0 0 0 3px rgba(213, 189, 175, 0.3); /* Soft glow */
+    outline: none;
+    background-color: #fff;
+}
+
+/* Validation Error Messages */
+.validation-error {
+    color: #e74c3c; /* A standard error red for visibility */
+    font-size: 0.9em;
+    margin-top: 5px;
+    min-height: 18px; /* To prevent layout shift */
+}
+
+/* Submit Button */
+button[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    background-color: #d5bdafff; /* Pale Dogwood */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.15em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(213, 189, 175, 0.3);
+}
+
+button[type="submit"]:hover {
+    background-color: #e3d5caff; /* Champagne Pink on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(213, 189, 175, 0.4);
+}
+
+button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(213, 189, 175, 0.2);
+}
+
+/* Message Display */
+.message {
+    text-align: center;
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 1.05em;
+    font-weight: 500;
+    animation: slideIn 0.5s ease-out;
+}
+
+.message.success {
+    background-color: #e6ffe6; /* Light green for success */
+    color: #28a745;
+    border: 1px solid #28a745;
+}
+
+.message.error {
+    background-color: #ffe6e6; /* Light red for error */
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .container {
+        padding: 25px;
+        margin: 15px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .form-group input {
+        padding: 10px 12px;
+        font-size: 1em;
+    }
+
+    button[type="submit"] {
+        padding: 12px;
+        font-size: 1.05em;
+    }
+}

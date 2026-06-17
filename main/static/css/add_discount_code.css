@@ -1,0 +1,179 @@
+/* add_discount.css */
+
+/* Re-using color variables from admin_style.css or defining locally if not linked globally */
+:root {
+    --isabelline: #edede9ff;
+    --timberwolf: #d6ccc2ff;
+    --linen: #f5ebe0ff;
+    --champagne-pink: #e3d5caff;
+    --pale-dogwood: #d5bdafff;
+
+    /* Semantic colors for messages */
+    --success-bg: #d4edda;
+    --success-text: #155724;
+    --success-border: #c3e6cb;
+    --error-bg: #f8d7da;
+    --error-text: #721c24;
+    --error-border: #f5c6cb;
+}
+
+/* Ensure consistent body styling, though often handled by admin_style.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--isabelline);
+    color: #333;
+    line-height: 1.6;
+    display: flex; /* For main layout with sidebar */
+    min-height: 100vh;
+}
+
+/* Main content specific to this page */
+.main-content {
+    /* These styles might be inherited from admin_style.css, but are repeated for clarity */
+    margin-left: 250px; /* Offset for the fixed sidebar */
+    padding: 100px 30px 30px 30px; /* Padding for fixed header and content */
+    flex-grow: 1; /* Allows main content to take remaining space */
+}
+
+.main-content h2 {
+    color: var(--pale-dogwood);
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 2em;
+}
+
+/* Form Container Styling */
+.form-container {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: var(--linen); /* Lighter background for the form area */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+    font-size: 1.05em;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"] {
+    width: calc(100% - 24px); /* Account for padding and border */
+    padding: 12px;
+    border: 1px solid var(--timberwolf); /* Soft border color */
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+    background-color: var(--isabelline); /* Light input background */
+    color: #333;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group input[type="date"]:focus {
+    border-color: var(--pale-dogwood);
+    box-shadow: 0 0 0 3px rgba(213, 189, 175, 0.3); /* Pale dogwood with transparency */
+    outline: none;
+}
+
+/* Submit Button Styling */
+.submit-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%; /* Make button full width of its container */
+    padding: 15px 20px;
+    background-color: var(--pale-dogwood); /* Primary action color */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button:hover {
+    background-color: #c0a897; /* Slightly darker pale-dogwood on hover */
+    transform: translateY(-2px);
+}
+
+.submit-button .fas {
+    font-size: 1.2em;
+}
+
+/* Message Container Styling */
+.message-container {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s ease;
+}
+
+.message-container.show {
+    opacity: 1; /* Shown when message is active */
+}
+
+.message-container.success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
+}
+
+.message-container.error {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    /* Adjustments for when the sidebar might stack or disappear */
+    .main-content {
+        margin-left: 0; /* Remove fixed sidebar offset */
+        padding-top: 80px; /* Adjust if header also becomes static */
+        padding: 20px;
+    }
+
+    .form-container {
+        padding: 20px;
+        margin: 20px auto;
+    }
+
+    .submit-button {
+        padding: 12px 15px;
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content h2 {
+        font-size: 1.7em;
+    }
+
+    .form-group label {
+        font-size: 1em;
+    }
+    
+    .form-group input {
+        font-size: 0.9em;
+    }
+}

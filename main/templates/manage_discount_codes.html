@@ -1,0 +1,137 @@
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدیریت کدهای تخفیف</title>
+    <link rel="stylesheet" href="{% static 'css/admin_style.css' %}"> 
+    <link rel="stylesheet" href="{% static 'css/manage_discount_codes.css' %}"> 
+</head>
+<body>
+    <div class="container">
+        <h1>مدیریت کدهای تخفیف</h1>
+        <div id="message-container" class="message"></div>
+
+        <h2>افزودن کد تخفیف جدید</h2>
+        <form id="add-discount-form">
+            <div>
+                <label for="code">کد تخفیف:</label>
+                <input type="text" id="code" name="code" required>
+            </div>
+            <div>
+                <label for="discount_percentage">درصد تخفیف (1-100):</label>
+                <input type="number" id="discount_percentage" name="discount_percentage" min="1" max="100" required>
+            </div>
+            <div>
+                <label for="valid_from">تاریخ شروع اعتبار:</label>
+                <input type="datetime-local" id="valid_from" name="valid_from" required>
+            </div>
+            <div>
+                <label for="valid_until">تاریخ پایان اعتبار:</label>
+                <input type="datetime-local" id="valid_until" name="valid_until" required>
+            </div>
+            <div>
+                <label for="usage_limit">محدودیت تعداد استفاده (0 برای نامحدود):</label>
+                <input type="number" id="usage_limit" name="usage_limit" min="0" value="0">
+            </div>
+            <div>
+                <input type="checkbox" id="is_active" name="is_active" checked>
+                <label for="is_active">فعال</label>
+            </div>
+            <button type="submit" id="submit-button">افزودن کد تخفیف</button>
+        </form>
+
+        <hr>
+
+        <h2>لیست کدهای تخفیف</h2>
+        <table class="discount-table">
+            <thead>
+                <tr>
+                    <th>کد تخفیف</th>
+                    <th>درصد تخفیف</th>
+                    <th>شروع اعتبار</th>
+                    <th>پایان اعتبار</th>
+                    <th>فعال</th>
+                    <th>تعداد استفاده</th>
+                    <th>محدودیت استفاده</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody id="discount-codes-list">
+                </tbody>
+        </table>
+    </div>
+
+    <script src="{% static 'js/manage_discount_codes.js' %}"></script>
+</body>
+</html> -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Discount Codes</title>
+    <link rel="stylesheet" href="{% static 'css/admin_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/manage_discount_codes.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Manage Discount Codes</h1>
+        <div id="message-container" class="message"></div>
+
+        <h2>Add New Discount Code</h2>
+        <form id="add-discount-form">
+            <div>
+                <label for="code">Discount Code:</label>
+                <input type="text" id="code" name="code" required>
+            </div>
+            <div>
+                <label for="discount_percentage">Discount Percentage (1-100):</label>
+                <input type="number" id="discount_percentage" name="discount_percentage" min="1" max="100" required>
+            </div>
+            <div>
+                <label for="valid_from">Valid From Date:</label>
+                <input type="datetime-local" id="valid_from" name="valid_from" required>
+            </div>
+            <div>
+                <label for="valid_until">Valid Until Date:</label>
+                <input type="datetime-local" id="valid_until" name="valid_until" required>
+            </div>
+            <div>
+                <label for="usage_limit">Usage Limit (0 for unlimited):</label>
+                <input type="number" id="usage_limit" name="usage_limit" min="0" value="0">
+            </div>
+            <div>
+                <input type="checkbox" id="is_active" name="is_active" checked>
+                <label for="is_active">Active</label>
+            </div>
+            <button type="submit" id="submit-button">Add Discount Code</button>
+        </form>
+
+        <hr>
+
+        <h2>Discount Code List</h2>
+        <table class="discount-table">
+            <thead>
+                <tr>
+                    <th>Discount Code</th>
+                    <th>Discount Percentage</th>
+                    <th>Valid From</th>
+                    <th>Valid Until</th>
+                    <th>Active</th>
+                    <th>Times Used</th>
+                    <th>Usage Limit</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="discount-codes-list">
+            </tbody>
+        </table>
+    </div>
+
+    <script src="{% static 'js/manage_discount_codes.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,665 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/add_books.css' %}">
+    <title>Add New Book (Admin Panel)</title>
+</head>
+<body>
+    <h1>Add New Book</h1>
+    <div id="message-container"></div>
+
+    <form id="add-book-form" enctype="multipart/form-data">
+        <div>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required minlength="3">
+        </div>
+
+        <div style="position: relative;">
+            <label for="author-name">Author Name:</label>
+            <input type="text" id="author-name" placeholder="Type name to search or create author..." autocomplete="off" required>
+            <input type="hidden" id="author-id" name="author">
+            <div id="author-suggestions"></div>
+        </div>
+
+        <div id="new-author-fields">
+            <h4>Or create a new author:</h4>
+            <div>
+                <label for="new_author_first_name">First Name:</label>
+                <input type="text" id="new_author_first_name" name="new_author_first_name">
+            </div>
+            <div>
+                <label for="new_author_last_name">Last Name:</label>
+                <input type="text" id="new_author_last_name" name="new_author_last_name">
+            </div>
+        </div>
+
+        <div>
+            <label for="genre">Genre (Separate numeric IDs with commas, e.g., 1,3):</label>
+            <input type="text" id="genre" name="genre" placeholder="Separate numeric genre IDs with commas (e.g., 1,3)">
+        </div>
+
+        <div>
+            <label for="publication_date">Publication Date:</label>
+            <input type="date" id="publication_date" name="publication_date">
+        </div>
+
+        <div>
+            <label for="isbn">ISBN:</label>
+            <input type="text" id="isbn" name="isbn">
+        </div>
+
+        <div>
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" step="0.01" min="0.01" required>
+        </div>
+
+        <div>
+            <label for="stock">Stock:</label>
+            <input type="number" id="stock" name="stock" min="0">
+        </div>
+
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="5" required minlength="10"></textarea>
+        </div>
+
+        <div>
+            <label for="cover_image">Cover Image:</label>
+            <input type="file" id="cover_image" name="cover_image" accept="image/*">
+        </div>
+
+        <div>
+            <label for="book_type">Book Type:</label>
+            <select id="book_type" name="book_type" required>
+                <option value="">Select...</option>
+                <option value="ebook">E-book</option>
+                <option value="paperback">Paperback</option>
+                <option value="hardcover">Hardcover</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="full_file">Full Book File (PDF):</label>
+            <input type="file" id="full_file" name="full_file" accept=".pdf" required>
+        </div>
+
+        <div>
+            <label for="sample_file">Sample Book File (PDF, Optional):</label>
+            <input type="file" id="sample_file" name="sample_file" accept=".pdf">
+        </div>
+
+        <button type="submit">Add Book</button>
+    </form>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const addBookForm = document.getElementById('add-book-form');
+        const messageContainer = document.getElementById('message-container');
+
+        const authorNameInput = document.getElementById('author-name');
+        const authorIdInput = document.getElementById('author-id');
+        const authorSuggestionsDiv = document.getElementById('author-suggestions');
+        const newAuthorFieldsDiv = document.getElementById('new-author-fields');
+        const newAuthorFirstName = document.getElementById('new_author_first_name');
+        const newAuthorLastName = document.getElementById('new_author_last_name');
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function showMessage(message, type) {
+            if (messageContainer) {
+                messageContainer.innerHTML = `<p class="${type}">${message}</p>`;
+                setTimeout(() => {
+                    messageContainer.innerHTML = '';
+                }, 5000);
+            } else {
+                console.log(`Message (${type}): ${message}`);
+            }
+        }
+
+        let debounceTimeout;
+        authorNameInput.addEventListener('input', async (event) => {
+            clearTimeout(debounceTimeout);
+            const query = event.target.value.trim();
+
+            if (query.length < 2) {
+                authorSuggestionsDiv.innerHTML = '';
+                authorIdInput.value = '';
+                newAuthorFieldsDiv.style.display = 'none';
+                return;
+            }
+
+            debounceTimeout = setTimeout(async () => {
+                try {
+                    const response = await fetch(`/api/authors/?search=${encodeURIComponent(query)}`, {
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                        },
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.detail || 'Error loading authors');
+                    }
+
+                    const authors = await response.json();
+
+                    authorSuggestionsDiv.innerHTML = '';
+                    authorIdInput.value = '';
+
+                    if (authors.length > 0) {
+                        authors.forEach(author => {
+                            const suggestionItem = document.createElement('div');
+                            suggestionItem.classList.add('author-suggestion-item');
+                            suggestionItem.textContent = `${author.first_name} ${author.last_name}`;
+                            suggestionItem.dataset.authorId = author.id;
+                            suggestionItem.addEventListener('click', () => {
+                                authorNameInput.value = `${author.first_name} ${author.last_name}`;
+                                authorIdInput.value = author.id;
+                                authorSuggestionsDiv.innerHTML = '';
+                                newAuthorFieldsDiv.style.display = 'none';
+                                newAuthorFirstName.value = '';
+                                newAuthorLastName.value = '';
+                            });
+                            authorSuggestionsDiv.appendChild(suggestionItem);
+                        });
+                        newAuthorFieldsDiv.style.display = 'none';
+                    } else {
+                        authorSuggestionsDiv.innerHTML = '<p>Author not found. You can create a new author.</p>';
+                        newAuthorFieldsDiv.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Error fetching author suggestions:', error);
+                    showMessage(`Error loading author list: ${error.message}`, 'error');
+                }
+            }, 300);
+        });
+
+        addBookForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(addBookForm);
+
+            const title = formData.get('title');
+            const description = formData.get('description');
+            const price = parseFloat(formData.get('price'));
+            const fullFile = formData.get('full_file');
+            const selectedAuthorId = authorIdInput.value;
+            const bookType = document.getElementById('book_type').value;
+
+            // Basic frontend validation for required fields
+            if (!title || title.length < 3) {
+                showMessage('Title must be at least 3 characters.', 'error');
+                return;
+            }
+            if (!description || description.length < 10) {
+                showMessage('Description must be at least 10 characters.', 'error');
+                return;
+            }
+            if (!price || isNaN(price) || price <= 0) {
+                showMessage('Price must be a positive number.', 'error');
+                return;
+            }
+            if (!fullFile || fullFile.size === 0) {
+                showMessage('The full book file must be selected.', 'error');
+                return;
+            }
+            if (!bookType) {
+                showMessage('Book type must be selected.', 'error');
+                return;
+            }
+
+            // Prepare data for API submission
+            // For genre: convert input string to an array of IDs
+            let genreInput = formData.get('genre').trim();
+            let genreIds = [];
+            if (genreInput.length > 0) {
+                genreIds = genreInput.split(',').map(idStr => parseInt(idStr.trim())).filter(n => !isNaN(n));
+                if (genreIds.length === 0) {
+                    showMessage('Genres must be entered as numeric IDs, like: 1,3', 'error');
+                    return;
+                }
+            }
+
+            let dataToSend = new FormData();
+            dataToSend.append('title', title);
+            dataToSend.append('description', description);
+            dataToSend.append('price', price);
+            dataToSend.append('book_type', bookType);
+
+            // Files
+            dataToSend.append('full_file', fullFile);
+            const sampleFile = formData.get('sample_file');
+            if (sampleFile && sampleFile.size > 0) {
+                dataToSend.append('sample_file', sampleFile);
+            }
+            const coverImage = formData.get('cover_image');
+            if (coverImage && coverImage.size > 0) {
+                dataToSend.append('cover_image', coverImage);
+            }
+
+            // Other optional fields
+            const publicationDate = formData.get('publication_date');
+            if (publicationDate) {
+                dataToSend.append('publication_date', publicationDate);
+            }
+            const isbn = formData.get('isbn');
+            if (isbn) {
+                dataToSend.append('isbn', isbn);
+            }
+            const stock = formData.get('stock');
+            if (stock) {
+                dataToSend.append('stock', stock);
+            }
+
+            // Genres as separate IDs (Note: For ManyToMany in DRF, genre[] should be sent as an array)
+            genreIds.forEach(id => dataToSend.append('genre', id));
+
+            // Author:
+            if (selectedAuthorId) {
+                // Author selected from the list
+                dataToSend.append('author', selectedAuthorId);
+            } else {
+                // New author
+                const newFirstName = newAuthorFirstName.value.trim();
+                const newLastName = newAuthorLastName.value.trim();
+                if (!newFirstName || !newLastName) {
+                    showMessage('For creating a new author, first name and last name must be filled.', 'error');
+                    return;
+                }
+                // Send new author as JSON in the new_author field
+                const newAuthorObj = {
+                    first_name: newFirstName,
+                    last_name: newLastName
+                };
+                dataToSend.append('new_author', JSON.stringify(newAuthorObj));
+            }
+
+            try {
+                const csrftoken = getCookie('csrftoken');
+
+                const response = await fetch('/api/admin/books/add/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: dataToSend,
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    showMessage('Book added successfully!', 'success');
+                    addBookForm.reset();
+                    authorIdInput.value = '';
+                    authorSuggestionsDiv.innerHTML = '';
+                    newAuthorFieldsDiv.style.display = 'none';
+                } else {
+                    const errorData = await response.json();
+                    let errorMsg = 'Error submitting information: ';
+                    if (typeof errorData === 'object') {
+                        for (const [key, value] of Object.entries(errorData)) {
+                            errorMsg += `${key}: ${Array.isArray(value) ? value.join(', ') : value} \n`;
+                        }
+                    } else {
+                        errorMsg += errorData.toString();
+                    }
+                    showMessage(errorMsg, 'error');
+                }
+            } catch (error) {
+                showMessage('Error connecting to server: ' + error.message, 'error');
+            }
+        });
+    });
+    </script>
+</body>
+</html>
+
+
+
+
+
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/add_books.css' %}">
+    <title>افزودن کتاب جدید (پنل مدیریت)</title>
+</head>
+<body>
+    <h1>افزودن کتاب جدید</h1>
+    <div id="message-container"></div>
+
+    <form id="add-book-form" enctype="multipart/form-data">
+        <div>
+            <label for="title">عنوان:</label>
+            <input type="text" id="title" name="title" required minlength="3">
+        </div>
+
+        <div style="position: relative;">
+            <label for="author-name">نام نویسنده:</label>
+            <input type="text" id="author-name" placeholder="برای جستجو یا ایجاد نویسنده، نام را تایپ کنید..." autocomplete="off" required>
+            <input type="hidden" id="author-id" name="author">
+            <div id="author-suggestions"></div>
+        </div>
+
+        <div id="new-author-fields">
+            <h4>یا نویسنده جدید ایجاد کنید:</h4>
+            <div>
+                <label for="new_author_first_name">نام:</label>
+                <input type="text" id="new_author_first_name" name="new_author_first_name">
+            </div>
+            <div>
+                <label for="new_author_last_name">نام خانوادگی:</label>
+                <input type="text" id="new_author_last_name" name="new_author_last_name">
+            </div>
+        </div>
+
+        <div>
+            <label for="genre">ژانر (شناسه‌های عددی را با کاما جدا کنید، مثال: 1,3):</label>
+            <input type="text" id="genre" name="genre" placeholder="شناسه‌های عددی ژانرها را با کاما جدا کنید (مثال: 1,3)">
+        </div>
+
+        <div>
+            <label for="publication_date">تاریخ انتشار:</label>
+            <input type="date" id="publication_date" name="publication_date">
+        </div>
+
+        <div>
+            <label for="isbn">شابک (ISBN):</label>
+            <input type="text" id="isbn" name="isbn">
+        </div>
+
+        <div>
+            <label for="price">قیمت:</label>
+            <input type="number" id="price" name="price" step="0.01" min="0.01" required>
+        </div>
+
+        <div>
+            <label for="stock">موجودی:</label>
+            <input type="number" id="stock" name="stock" min="0">
+        </div>
+
+        <div>
+            <label for="description">توضیحات:</label>
+            <textarea id="description" name="description" rows="5" required minlength="10"></textarea>
+        </div>
+
+        <div>
+            <label for="cover_image">تصویر جلد:</label>
+            <input type="file" id="cover_image" name="cover_image" accept="image/*">
+        </div>
+
+        <div>
+            <label for="book_type">نوع کتاب:</label>
+            <select id="book_type" name="book_type" required>
+                <option value="">انتخاب کنید...</option>
+                <option value="ebook">کتاب الکترونیکی</option>
+                <option value="paperback">کتاب شومیز</option>
+                <option value="hardcover">کتاب گالینگور</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="full_file">فایل کامل کتاب (PDF):</label>
+            <input type="file" id="full_file" name="full_file" accept=".pdf" required>
+        </div>
+
+        <div>
+            <label for="sample_file">فایل نمونه کتاب (PDF، اختیاری):</label>
+            <input type="file" id="sample_file" name="sample_file" accept=".pdf">
+        </div>
+
+        <button type="submit">افزودن کتاب</button>
+    </form>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const addBookForm = document.getElementById('add-book-form');
+        const messageContainer = document.getElementById('message-container');
+
+        const authorNameInput = document.getElementById('author-name');
+        const authorIdInput = document.getElementById('author-id');
+        const authorSuggestionsDiv = document.getElementById('author-suggestions');
+        const newAuthorFieldsDiv = document.getElementById('new-author-fields');
+        const newAuthorFirstName = document.getElementById('new_author_first_name');
+        const newAuthorLastName = document.getElementById('new_author_last_name');
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function showMessage(message, type) {
+            if (messageContainer) {
+                messageContainer.innerHTML = `<p class="${type}">${message}</p>`;
+                setTimeout(() => {
+                    messageContainer.innerHTML = '';
+                }, 5000);
+            } else {
+                console.log(`Message (${type}): ${message}`);
+            }
+        }
+
+        let debounceTimeout;
+        authorNameInput.addEventListener('input', async (event) => {
+            clearTimeout(debounceTimeout);
+            const query = event.target.value.trim();
+
+            if (query.length < 2) {
+                authorSuggestionsDiv.innerHTML = '';
+                authorIdInput.value = '';
+                newAuthorFieldsDiv.style.display = 'none';
+                return;
+            }
+
+            debounceTimeout = setTimeout(async () => {
+                try {
+                    const response = await fetch(`/api/authors/?search=${encodeURIComponent(query)}`, {
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                        },
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.detail || 'خطا در بارگذاری نویسندگان');
+                    }
+
+                    const authors = await response.json();
+
+                    authorSuggestionsDiv.innerHTML = '';
+                    authorIdInput.value = '';
+
+                    if (authors.length > 0) {
+                        authors.forEach(author => {
+                            const suggestionItem = document.createElement('div');
+                            suggestionItem.classList.add('author-suggestion-item');
+                            suggestionItem.textContent = `${author.first_name} ${author.last_name}`;
+                            suggestionItem.dataset.authorId = author.id;
+                            suggestionItem.addEventListener('click', () => {
+                                authorNameInput.value = `${author.first_name} ${author.last_name}`;
+                                authorIdInput.value = author.id;
+                                authorSuggestionsDiv.innerHTML = '';
+                                newAuthorFieldsDiv.style.display = 'none';
+                                newAuthorFirstName.value = '';
+                                newAuthorLastName.value = '';
+                            });
+                            authorSuggestionsDiv.appendChild(suggestionItem);
+                        });
+                        newAuthorFieldsDiv.style.display = 'none';
+                    } else {
+                        authorSuggestionsDiv.innerHTML = '<p>نویسنده یافت نشد. می‌توانید یک نویسنده جدید ایجاد کنید.</p>';
+                        newAuthorFieldsDiv.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Error fetching author suggestions:', error);
+                    showMessage(`خطا در بارگذاری لیست نویسندگان: ${error.message}`, 'error');
+                }
+            }, 300);
+        });
+
+        addBookForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(addBookForm);
+
+            const title = formData.get('title');
+            const description = formData.get('description');
+            const price = parseFloat(formData.get('price'));
+            const fullFile = formData.get('full_file');
+            const selectedAuthorId = authorIdInput.value;
+            const bookType = document.getElementById('book_type').value;
+
+            // Basic frontend validation for required fields
+            if (!title || title.length < 3) {
+                showMessage('عنوان باید حداقل ۳ کاراکتر باشد.', 'error');
+                return;
+            }
+            if (!description || description.length < 10) {
+                showMessage('توضیحات باید حداقل ۱۰ کاراکتر باشد.', 'error');
+                return;
+            }
+            if (!price || isNaN(price) || price <= 0) {
+                showMessage('قیمت باید عددی مثبت باشد.', 'error');
+                return;
+            }
+            if (!fullFile || fullFile.size === 0) {
+                showMessage('فایل کامل کتاب باید انتخاب شود.', 'error');
+                return;
+            }
+            if (!bookType) {
+                showMessage('نوع کتاب باید انتخاب شود.', 'error');
+                return;
+            }
+
+            // آماده کردن داده‌ها برای ارسال به API
+            // برای genre: رشته ورودی را به آرایه آی‌دی تبدیل کن
+            let genreInput = formData.get('genre').trim();
+            let genreIds = [];
+            if (genreInput.length > 0) {
+                genreIds = genreInput.split(',').map(idStr => parseInt(idStr.trim())).filter(n => !isNaN(n));
+                if (genreIds.length === 0) {
+                    showMessage('ژانرها باید به صورت آی‌دی‌های عددی وارد شوند، مانند: 1,3', 'error');
+                    return;
+                }
+            }
+
+            let dataToSend = new FormData();
+            dataToSend.append('title', title);
+            dataToSend.append('description', description);
+            dataToSend.append('price', price);
+            dataToSend.append('book_type', bookType);
+
+            // فایل‌ها
+            dataToSend.append('full_file', fullFile);
+            const sampleFile = formData.get('sample_file');
+            if (sampleFile && sampleFile.size > 0) {
+                dataToSend.append('sample_file', sampleFile);
+            }
+            const coverImage = formData.get('cover_image');
+            if (coverImage && coverImage.size > 0) {
+                dataToSend.append('cover_image', coverImage);
+            }
+
+            // سایر فیلدهای اختیاری
+            const publicationDate = formData.get('publication_date');
+            if (publicationDate) {
+                dataToSend.append('publication_date', publicationDate);
+            }
+            const isbn = formData.get('isbn');
+            if (isbn) {
+                dataToSend.append('isbn', isbn);
+            }
+            const stock = formData.get('stock');
+            if (stock) {
+                dataToSend.append('stock', stock);
+            }
+
+            // ژانر به صورت آی‌دی‌های جدا شده (توجه: برای ManyToMany در DRF باید genre[] به صورت آرایه ارسال شود)
+            genreIds.forEach(id => dataToSend.append('genre', id));
+
+            // نویسنده:
+            if (selectedAuthorId) {
+                // نویسنده انتخاب شده از لیست
+                dataToSend.append('author', selectedAuthorId);
+            } else {
+                // نویسنده جدید
+                const newFirstName = newAuthorFirstName.value.trim();
+                const newLastName = newAuthorLastName.value.trim();
+                if (!newFirstName || !newLastName) {
+                    showMessage('برای ایجاد نویسنده جدید، نام و نام خانوادگی باید پر شوند.', 'error');
+                    return;
+                }
+                // ارسال نویسنده جدید به شکل JSON در فیلد new_author
+                const newAuthorObj = {
+                    first_name: newFirstName,
+                    last_name: newLastName
+                };
+                dataToSend.append('new_author', JSON.stringify(newAuthorObj));
+            }
+
+            try {
+                const csrftoken = getCookie('csrftoken');
+
+                const response = await fetch('/api/admin/books/add/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: dataToSend,
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    showMessage('کتاب با موفقیت اضافه شد!', 'success');
+                    addBookForm.reset();
+                    authorIdInput.value = '';
+                    authorSuggestionsDiv.innerHTML = '';
+                    newAuthorFieldsDiv.style.display = 'none';
+                } else {
+                    const errorData = await response.json();
+                    let errorMsg = 'خطا در ارسال اطلاعات: ';
+                    if (typeof errorData === 'object') {
+                        for (const [key, value] of Object.entries(errorData)) {
+                            errorMsg += `${key}: ${Array.isArray(value) ? value.join(', ') : value} \n`;
+                        }
+                    } else {
+                        errorMsg += errorData.toString();
+                    }
+                    showMessage(errorMsg, 'error');
+                }
+            } catch (error) {
+                showMessage('خطا در ارتباط با سرور: ' + error.message, 'error');
+            }
+        });
+    });
+    </script>
+</body>
+</html> -->

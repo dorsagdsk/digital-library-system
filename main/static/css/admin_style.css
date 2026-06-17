@@ -1,0 +1,393 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffcece;
+
+}
+
+/* Header Styles */
+.header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #3f0000, #340000);
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px; /* ارتفاع هدر کاهش یافت */
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-left input {
+    padding: 5px;
+    border: none;
+    border-radius: 4px;
+    width: 150px; /* عرض کمتر برای جعبه جستجو */
+}
+
+.header-left button {
+    background-color: #f5f5f5;
+    border: none;
+    color: #000000;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.header-center h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+/*.header-center {*/
+/*    flex: 2;*/
+/*    text-align: center;*/
+/*    */
+/*}*/
+
+/*.header-center h1 {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    gap: 10px;*/
+/*    font-size: 1.6rem;*/
+/*}*/
+/*.header-right {*/
+/*    flex: 1;*/
+/*    text-align: right;*/
+/*}*/
+
+/*.header-right a {*/
+/*    color: #ffffff;*/
+/*    text-decoration: none;*/
+/*    font-size: 1rem;*/
+/*}*/
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.header-right a {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    background-color: #a10300;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap; /* جلوگیری از شکستن متن */
+}
+
+.header-right a:hover {
+    background-color: #c0392b;
+}
+
+.cherry-icon {
+    width: 40px; /* تنظیم عرض آیکون */
+    height: 40px; /* تنظیم ارتفاع آیکون */
+    margin-right: 10px; /* فاصله از متن "Restaurant Albalu" */
+    vertical-align: middle; /* هم‌راستا با متن */
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 200px; /* عرض کاهش یافته */
+    background: linear-gradient(90deg, #3f0000, #340000);
+    color: white;
+    padding: 15px;
+    position: fixed;
+    top: 50px; /* ارتفاع هماهنگ با هدر */
+    left: 0;
+    height: calc(100vh - 50px); /* ارتفاع سایدبار بدون هدر */
+    box-shadow: 2px 0 5px rgb(25, 18, 18);
+    overflow-y: auto; /* پیمایش برای محتوای بلند */
+}
+
+.sidebar h3 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #ff4053;
+}
+
+/* Main Content Styles */
+.main-content {
+    margin-top: 50px; /* فضای خالی زیر هدر */
+    margin-left: 210px; /* فضای خالی کنار سایدبار */
+    padding: 15px;
+    background: #ffffff;
+    min-height: calc(100vh - 50px); /* ارتفاع بدون هدر */
+    box-sizing: border-box;
+    overflow-x: auto;
+    text-align: center;
+    direction: rtl;
+
+
+}
+
+/* Food Card Styles */
+/* Food Card Styles */
+.food-card {
+    max-width:900px ;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    /*align-items: center; !* کارت‌ها در محور افقی وسط‌چین می‌شوند *!*/
+    margin-right: 150px;
+
+    background: #ffcbcb;
+    gap: 15px;
+    direction: rtl; /* جهت متن راست‌به‌چپ */
+    box-shadow: 2px 0 5px rgb(25, 18, 18);
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*align-items: center; !* کارت‌ها در محور افقی وسط‌چین می‌شوند *!*/
+    /*justify-content: flex-start; !* کارت‌ها از بالا شروع می‌شوند *!*/
+}
+
+.food-card img {
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.food-card-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.food-card-content h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: #2c3e50;
+}
+
+.food-card-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.food-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.food-card-actions button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.edit-btn {
+    background-color: #50000a;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #a10300;
+    color: white;
+}
+/* --- Main Content Area --- */
+.main-content {
+    flex-grow: 1; /* Allows main content to take up remaining space */
+    padding: 80px 30px 30px 30px; /* Top padding for fixed header */
+    background-color: #ecf0f1; /* Very light grey */
+}
+
+.main-content h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+/* --- Form Container and Elements --- */
+.form-container {
+    background-color: #ffffff; /* White background for the form area */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Softer shadow */
+    max-width: 550px; /* Slightly wider for better spacing */
+    margin: 20px auto; /* Center the form */
+    border: 1px solid #e0e0e0; /* Light border */
+}
+
+.form-group {
+    margin-bottom: 20px; /* More space between form groups */
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px; /* More space below label */
+    font-weight: bold;
+    color: #555; /* Slightly darker grey for labels */
+    font-size: 15px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"] {
+    width: calc(100% - 20px); /* Adjust width for padding */
+    padding: 12px; /* Increased padding for better touch targets */
+    border: 1px solid #ccc; /* Lighter border */
+    border-radius: 6px; /* Slightly more rounded corners */
+    box-sizing: border-box; /* Ensures padding/border are included in width */
+    font-size: 16px; /* Larger font size for readability */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group input[type="date"]:focus {
+    border-color: #4CAF50; /* Highlight border on focus */
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); /* Light green shadow on focus */
+    outline: none; /* Remove default outline */
+}
+
+.submit-button {
+    background-color: #28a745; /* Bootstrap-like green */
+    color: white;
+    padding: 15px 25px; /* More padding for a substantial button */
+    border: none;
+    border-radius: 7px; /* More rounded button */
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: auto;
+    display: block;
+    margin: 0 auto; /* Center the button */
+}
+
+.submit-button:hover {
+    background-color: #218838; /* Darker green on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+.submit-button i {
+    margin-right: 8px; /* Space between icon and text */
+}
+
+/* --- Message Container Styles --- */
+.message-container {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.message.success {
+    background-color: #d4edda; /* Light green background */
+    color: #155724; /* Dark green text */
+    border: 1px solid #c3e6cb; /* Green border */
+}
+
+.message.error {
+    background-color: #f8d7da; /* Light red background */
+    color: #721c24; /* Dark red text */
+    border: 1px solid #f5c6cb; /* Red border */
+}
+
+/* --- Responsive Adjustments (Basic) --- */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding-top: 15px; /* Adjust padding when sidebar is on top */
+        position: static; /* No longer fixed */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    .sidebar ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .sidebar ul li {
+        width: 50%; /* Two items per row */
+    }
+    .main-content {
+        padding-top: 20px; /* Adjust padding for main content */
+    }
+    .header .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .header-left, .header-right {
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar ul li {
+        width: 100%; /* One item per row on smaller screens */
+    }
+    .form-container {
+        padding: 20px;
+        margin: 10px;
+    }
+}

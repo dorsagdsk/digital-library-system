@@ -1,0 +1,44 @@
+{% load static %}
+
+<div class="row">
+    {% if my_books %}
+        {% for ul_item in my_books %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="book-card shadow-sm">
+                    {% if ul_item.book.cover_image %}
+                        <img src="{{ ul_item.book.cover_image.url }}" class="img-fluid rounded" alt="{{ ul_item.book.title }} cover">
+                    {% else %}
+                        <img src="{% static 'main/img/default_cover.png' %}" class="img-fluid rounded" alt="Default cover">
+                    {% endif %}
+                    <div>
+                        <h5>{{ ul_item.book.title }}</h5>
+                        <p class="text-muted">By: {{ ul_item.book.author.username }}</p>
+                        <p>Added: {{ ul_item.added_at|date:"M d, Y" }}</p>
+                        {% if ul_item.book.full_file %}
+                            <a href="{{ ul_item.book.full_file.url }}" class="btn btn-success btn-sm" download>Download Book</a>
+                        {% else %}
+                            <span class="text-danger">فایل در دسترس نیست</span>
+                        {% endif %}
+                        <div class="mt-2">
+                            <div class="d-flex align-items-center">
+                                <span>امتیاز شما: </span>
+                                <div class="star-rating d-inline-block ms-2" data-book-id="{{ ul_item.book.id }}">
+                                    <input type="radio" id="star5-{{ ul_item.book.id }}" name="rating-{{ ul_item.book.id }}" value="5" {% if ul_item.rating == 5 %}checked{% endif %} /><label for="star5-{{ ul_item.book.id }}"><i class="fa fa-star"></i></label>
+                                    <input type="radio" id="star4-{{ ul_item.book.id }}" name="rating-{{ ul_item.book.id }}" value="4" {% if ul_item.rating == 4 %}checked{% endif %} /><label for="star4-{{ ul_item.book.id }}"><i class="fa fa-star"></i></label>
+                                    <input type="radio" id="star3-{{ ul_item.book.id }}" name="rating-{{ ul_item.book.id }}" value="3" {% if ul_item.rating == 3 %}checked{% endif %} /><label for="star3-{{ ul_item.book.id }}"><i class="fa fa-star"></i></label>
+                                    <input type="radio" id="star2-{{ ul_item.book.id }}" name="rating-{{ ul_item.book.id }}" value="2" {% if ul_item.rating == 2 %}checked{% endif %} /><label for="star2-{{ ul_item.book.id }}"><i class="fa fa-star"></i></label>
+                                    <input type="radio" id="star1-{{ ul_item.book.id }}" name="rating-{{ ul_item.book.id }}" value="1" {% if ul_item.rating == 1 %}checked{% endif %} /><label for="star1-{{ ul_item.book.id }}"><i class="fa fa-star"></i></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12">
+            <p>شما هنوز هیچ کتابی خریداری نکرده‌اید. مجموعه کتاب‌های ما را مرور کنید!</p>
+            <a href="#browse-books-tab-pane" data-bs-toggle="tab" class="btn btn-info">مرور کتاب‌ها</a>
+        </div>
+    {% endif %}
+</div>

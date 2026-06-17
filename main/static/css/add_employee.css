@@ -1,0 +1,101 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(90deg, #ab1212, #340000);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.add-employee-form {
+    direction: rtl;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+.add-employee-form h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+}
+
+.add-employee-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-employee-form input {
+    margin: 10px 0;
+    padding: 15px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.add-employee-form input:focus {
+    border-color: #000000;
+    box-shadow: 0 0 8px rgba(۰, ۰, ۰, 0.6);
+    outline: none;
+}
+
+.add-employee-form button {
+    background: linear-gradient(90deg, #ab1212, #340000);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    text-transform: uppercase;
+}
+
+.add-employee-form button:hover {
+    background: linear-gradient(90deg, #ab1212, #340000);
+    box-shadow: 0 5px 15px rgba(۰, ۰, ۰, 0.4);
+}
+
+.add-employee-form #add-employee-result {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #333;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* واکنش‌گرا برای موبایل */
+@media (max-width: 500px) {
+    .add-employee-form {
+        padding: 20px;
+    }
+
+    .add-employee-form h2 {
+        font-size: 20px;
+    }
+
+    .add-employee-form input,
+    .add-employee-form button {
+        padding: 10px;
+        font-size: 14px;
+    }
+}

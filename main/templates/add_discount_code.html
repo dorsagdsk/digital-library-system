@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Discount Code</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}"> {# Your main style.css #}
+    <link rel="stylesheet" href="{% static 'css/add_discount_code.css' %}"> {# Your main style.css #}
+
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-left">
+                <div class="search-bar-group">
+                    <input type="text" id="search-box" placeholder="Search...">
+                    <button id="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="header-center">
+              
+            </div>
+            <div class="header-right">
+                <button id="logout-button">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar">
+        <h3>Admin Panel</h3>
+        <ul>
+            <li><a href="/admin-dashboard/"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="/add-book"><i class="fas fa-book-medical"></i> Add New Book</a></li>
+            <li><a href="/add-author"><i class="fas fa-feather-alt"></i> Add New Author</a></li>
+            <li><a href="/manage-books/"><i class="fas fa-book-open"></i> Manage Books</a></li>
+            <li><a href="/manage-authors/"><i class="fas fa-users"></i> Manage Authors</a></li>
+            <li><a href="/manage-users/"><i class="fas fa-user-friends"></i> Manage Users</a></li>
+            <li><a href="/add-discount-code" class="active"><i class="fas fa-tags"></i> Add Discount Code</a></li>
+            <li><a href="/view-orders"><i class="fas fa-receipt"></i> View Orders</a></li>
+            <li><a href="/view-statistics"><i class="fas fa-chart-line"></i> View Statistics</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h2>Add New Discount Code</h2>
+        <div class="form-container">
+            <form id="add-discount-form">
+                <div class="form-group">
+                    <label for="code">Discount Code (8 characters):</label>
+                    <input type="text" id="code" name="code" required maxlength="8">
+                </div>
+                <div class="form-group">
+                    <label for="percentage">Discount Percentage (%):</label>
+                    <input type="number" id="percentage" name="percentage" min="1" max="100" step="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="expiration_date">Expiration Date:</label>
+                    <input type="date" id="expiration_date" name="expiration_date" required>
+                </div>
+                <button type="submit" class="submit-button"><i class="fas fa-plus-circle"></i> Add Code</button>
+            </form>
+            <div id="message-container" class="message-container"></div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/add_discount.js' %}"></script>
+    <script src="{% static 'js/logout.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+/* admin_style.css */
+
+/* Color Palette Variables */
+:root {
+    --isabelline: #edede9ff;
+    --timberwolf: #d6ccc2ff;
+    --linen: #f5ebe0ff;
+    --champagne-pink: #e3d5caff;
+    --pale-dogwood: #d5bdafff;
+
+    /* Semantic colors for alerts, etc. */
+    --success-bg: #d4edda;
+    --success-text: #155724;
+    --success-border: #c3e6cb;
+    --error-bg: #f8d7da;
+    --error-text: #721c24;
+    --error-border: #f5c6cb;
+    --info-bg: #d1ecf1;
+    --info-text: #0c5460;
+    --info-border: #bee5eb;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--isabelline); /* Light background */
+    color: #333;
+    line-height: 1.6;
+    direction: ltr; /* Set RTL for the whole page */
+    text-align: left; /* Default text alignment for RTL */
+}
+
+h1, h2 {
+    color: var(--pale-dogwood); /* A warm, slightly darker accent for headings */
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: var(--linen); /* Lighter background for the main container */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Message Styling */
+#message-container {
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: none; /* Hidden by default, shown by JS */
+}
+
+#message-container.success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
+}
+
+#message-container.error {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+}
+
+/* Form Styling */
+form div {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="datetime-local"] {
+    width: calc(100% - 24px); /* Account for padding and border */
+    padding: 12px;
+    border: 1px solid var(--timberwolf); /* Soft border color */
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+    background-color: var(--isabelline); /* Light input background */
+    color: #333;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="datetime-local"]:focus {
+    border-color: var(--pale-dogwood);
+    box-shadow: 0 0 0 3px rgba(213, 189, 175, 0.3); /* Pale dogwood with transparency */
+    outline: none;
+}
+
+input[type="checkbox"] {
+    margin-left: 8px; /* Space between checkbox and label in RTL */
+    transform: scale(1.2); /* Slightly larger checkbox */
+}
+
+
+button {
+    padding: 12px 25px;
+    background-color: var(--pale-dogwood); /* Primary action button color */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #c0a897; /* Slightly darker pale-dogwood on hover */
+    transform: translateY(-1px);
+}
+
+/* Horizontal Rule */
+hr {
+    border: 0;
+    height: 1px;
+    background-color: var(--timberwolf);
+    margin: 40px auto;
+    max-width: 100%; /* Spans full container width */
+}
+
+/* Table Styling */
+.discount-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    background-color: var(--isabelline); /* Light background for table */
+    border-radius: 8px;
+    overflow: hidden; /* Ensures rounded corners for table */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.discount-table th, .discount-table td {
+    border: 1px solid var(--champagne-pink); /* Soft border for cells */
+    padding: 12px 15px;
+    text-align: right; /* Align text right for RTL */
+}
+
+.discount-table th {
+    background-color: var(--timberwolf); /* Header background */
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.discount-table tbody tr:nth-child(even) {
+    background-color: var(--linen); /* Alternate row color */
+}
+
+.discount-table tbody tr:hover {
+    background-color: var(--champagne-pink); /* Hover effect for rows */
+}
+
+.action-buttons button {
+    margin-left: 8px; /* Space between action buttons in RTL */
+    padding: 7px 12px;
+    font-size: 0.85rem;
+    margin-top: 0; /* Override previous margin-top */
+}
+
+.edit-button {
+    background-color: #ffc107; /* Bootstrap yellow for edit */
+    color: #333; /* Dark text for better contrast */
+}
+.edit-button:hover {
+    background-color: #e0a800;
+}
+
+.delete-button {
+    background-color: #dc3545; /* Bootstrap red for delete */
+    color: white;
+}
+.delete-button:hover {
+    background-color: #c82333;
+}
+
+/* Specific styling for the "Active" checkbox label in the table */
+.discount-table input[type="checkbox"] {
+    pointer-events: none; /* Make checkboxes non-interactive in the table display */
+    cursor: default;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    .container {
+        padding: 15px;
+        margin: 10px auto;
+    }
+    .discount-table, .discount-table tbody, .discount-table th, .discount-table td, .discount-table tr {
+        display: block; /* Stack table elements for small screens */
+    }
+    .discount-table thead {
+        display: none; /* Hide header on small screens */
+    }
+    .discount-table tr {
+        margin-bottom: 15px;
+        border: 1px solid var(--champagne-pink);
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .discount-table td {
+        border: none;
+        border-bottom: 1px solid var(--champagne-pink);
+        position: relative;
+        padding-left: 50%; /* Space for pseudo-element label */
+        text-align: left; /* Align cell content to left */
+    }
+    .discount-table td:before {
+        content: attr(data-label); /* Use data-label for content */
+        position: absolute;
+        right: 15px; /* Position label to the right */
+        width: 45%;
+        padding-left: 10px;
+        font-weight: bold;
+        text-align: right; /* Align label text to right */
+        white-space: nowrap;
+        color: #666;
+    }
+    .action-buttons {
+        text-align: center;
+        padding-top: 10px;
+        border-top: 1px solid var(--champagne-pink);
+    }
+    .action-buttons button {
+        margin: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .action-buttons button {
+        width: auto; /* Allow action buttons to size naturally */
+    }
+}

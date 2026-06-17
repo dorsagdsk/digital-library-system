@@ -48,14 +48,17 @@ A full-stack digital library management system developed using Django, Django RE
 
 ## 📸 Screenshots
 
-- Home page
-![alt text](images/Capture.png)
-- ai page
-![alt text](images/Capture4.png)
-- Admin panel
-![alt text](images/Capture2.png)
-- reading book
-![alt text](images/Capture1.png)
+### 🏠 Home Page
+![Home Page](images/Capture.png)
+
+### 🤖 AI Page
+![AI Page](images/Capture4.png)
+
+### 👨‍💼 Admin Panel
+![Admin Panel](images/Capture2.png)
+
+### 📖 Reading Book
+![Reading Book](images/Capture1.png)
 
 ---
 ## 👨‍💻 Contribution
